@@ -32,75 +32,92 @@
 :root {
   --radius: 0.25rem;
 
-  /* Brand: deep noir + warm gold */
-  --background: oklch(0.13 0.01 60);
-  --foreground: oklch(0.96 0.01 80);
+  /* Brand palette */
+  --background: #121721;
+  --bg-1: #121721;
+  --bg-2: #111322;
+  --bg-3: #0D1119;
 
-  --card: oklch(0.16 0.012 60);
-  --card-foreground: oklch(0.96 0.01 80);
+  --foreground: #CBD1DD;
 
-  --primary: oklch(0.78 0.13 75);          /* gold */
-  --primary-foreground: oklch(0.14 0.01 60);
+  --card: #161B27;
+  --card-foreground: #CBD1DD;
 
-  --secondary: oklch(0.2 0.014 60);
-  --secondary-foreground: oklch(0.96 0.01 80);
+  --gold-1: #DDC9A9;
+  --gold-2: #B59D7A;
+  --gold: #C9B189;
+  --gold-soft: #B59D7A;
 
-  --muted: oklch(0.2 0.012 60);
-  --muted-foreground: oklch(0.7 0.02 70);
+  --primary: #C9B189;
+  --primary-foreground: #0D1119;
 
-  --accent: oklch(0.78 0.13 75);
-  --accent-foreground: oklch(0.14 0.01 60);
+  --secondary: #1A2030;
+  --secondary-foreground: #CBD1DD;
 
-  --gold: oklch(0.82 0.14 78);
-  --gold-soft: oklch(0.7 0.1 75);
+  --muted: #1A2030;
+  --muted-foreground: #8A93A6;
 
-  --border: oklch(0.3 0.02 70 / 50%);
-  --input: oklch(0.25 0.015 60);
-  --ring: oklch(0.78 0.13 75);
+  --accent: #C9B189;
+  --accent-foreground: #0D1119;
+
+  --border: rgba(203, 209, 221, 0.12);
+  --input: #1A2030;
+  --ring: #C9B189;
 
   --destructive: oklch(0.6 0.22 27);
-  --destructive-foreground: oklch(0.98 0 0);
+  --destructive-foreground: #FFFFFF;
   --popover: var(--card);
   --popover-foreground: var(--card-foreground);
+
+  --gradient-gold: linear-gradient(135deg, #DDC9A9 7%, #B59D7A 47%, #DDC9A9 100%);
+  --gradient-bg: linear-gradient(180deg, #121721 0%, #111322 50%, #0D1119 100%);
 }
 
 .dark {
-  --background: oklch(0.13 0.01 60);
-  --foreground: oklch(0.96 0.01 80);
+  --background: #121721;
+  --foreground: #CBD1DD;
 }
 
 @layer base {
   * { border-color: var(--color-border); }
   html { scroll-behavior: smooth; }
   body {
-    background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
-    background-image:
-      radial-gradient(ellipse 80% 50% at 50% -10%, oklch(0.78 0.13 75 / 0.12), transparent 60%),
-      radial-gradient(ellipse 60% 40% at 90% 100%, oklch(0.78 0.13 75 / 0.06), transparent 70%);
+    background: var(--gradient-bg);
     background-attachment: fixed;
+    min-height: 100vh;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(221, 201, 169, 0.10), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(181, 157, 122, 0.06), transparent 70%);
+    z-index: 0;
   }
   h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; }
 }
 
 @layer utilities {
   .text-gold { color: var(--gold); }
-  .bg-gold { background-color: var(--gold); }
+  .bg-gold { background: var(--gradient-gold); color: var(--primary-foreground); }
   .border-gold { border-color: var(--gold); }
   .gold-gradient {
-    background: linear-gradient(135deg, oklch(0.88 0.12 85), oklch(0.72 0.15 70) 60%, oklch(0.55 0.12 60));
+    background: var(--gradient-gold);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
-  .hairline { height: 1px; background: linear-gradient(90deg, transparent, oklch(0.78 0.13 75 / 0.6), transparent); }
+  .hairline { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.6; }
   .container-prose { max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; }
   .glass {
-    background: linear-gradient(180deg, oklch(0.18 0.012 60 / 0.7), oklch(0.14 0.01 60 / 0.6));
+    background: linear-gradient(180deg, rgba(22, 27, 39, 0.7), rgba(13, 17, 25, 0.6));
     backdrop-filter: blur(12px);
-    border: 1px solid oklch(0.78 0.13 75 / 0.15);
+    border: 1px solid rgba(221, 201, 169, 0.15);
   }
   .ornament::before, .ornament::after {
     content: ""; display: inline-block; width: 40px; height: 1px;
