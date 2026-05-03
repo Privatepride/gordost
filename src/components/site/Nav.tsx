@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import logo from "@/assets/logo.jpg";
 
 const links = [
   { href: "#about", label: "О клубе" },
@@ -28,7 +29,8 @@ export function Nav() {
     >
       <div className="container-prose flex items-center justify-between h-20">
         <a href="#top" className="flex items-center gap-3">
-          <span className="font-display text-2xl tracking-[0.3em] text-gold">ГОРДОСТЬ</span>
+          <img src={logo} alt="ГОРДОСТЬ" className="h-10 w-10 rounded-full object-cover" />
+          <span className="font-display text-2xl tracking-[0.3em] gold-gradient">ГОРДОСТЬ</span>
         </a>
 
         <nav className="hidden lg:flex items-center gap-8">

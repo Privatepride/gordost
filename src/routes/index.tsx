@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import heroImg from "@/assets/hero.jpg";
-import founderImg from "@/assets/founder.jpg";
+import founderImg from "@/assets/founder.png";
 import citiesImg from "@/assets/cities.jpg";
 import { Nav } from "@/components/site/Nav";
 import { SectionLabel, SectionTitle } from "@/components/site/SectionTitle";
@@ -296,16 +296,14 @@ function Index() {
       <section className="py-28 md:py-36 bg-card/40">
         <div className="container-prose grid lg:grid-cols-5 gap-12 items-center">
           <div className="lg:col-span-2">
-            <div className="relative aspect-[4/5] overflow-hidden">
+            <div className="relative aspect-[4/5] overflow-hidden border border-gold/20" style={{ background: "linear-gradient(160deg, #1A2030 0%, #0D1119 100%)" }}>
+              <div className="absolute inset-0 opacity-30" style={{ background: "radial-gradient(circle at 70% 40%, rgba(221,201,169,0.25), transparent 60%)" }} />
               <img
                 src={founderImg}
                 alt="Андрей Плахотнюк"
                 loading="lazy"
-                width={1024}
-                height={1280}
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                className="absolute inset-0 w-full h-full object-contain object-bottom"
               />
-              <div className="absolute inset-0 ring-1 ring-gold/20" />
             </div>
           </div>
           <div className="lg:col-span-3">
