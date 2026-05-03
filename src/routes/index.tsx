@@ -4,6 +4,7 @@ import founderImg from "@/assets/founder.jpg";
 import citiesImg from "@/assets/cities.jpg";
 import { Nav } from "@/components/site/Nav";
 import { SectionLabel, SectionTitle } from "@/components/site/SectionTitle";
+import { JoinCTA } from "@/components/site/JoinCTA";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -155,6 +156,8 @@ function Index() {
         </div>
       </section>
 
+      <JoinCTA variant="minimal" cta="Узнать о вступлении" />
+
       {/* ABOUT */}
       <section id="about" className="py-28 md:py-36 relative">
         <div className="container-prose">
@@ -189,6 +192,14 @@ function Index() {
           </div>
         </div>
       </section>
+
+      <JoinCTA
+        variant="solid"
+        eyebrow="Присоединиться"
+        title="Разделяете наши ценности?"
+        text="Сделайте первый шаг к сообществу, где репутация и доверие становятся капиталом."
+        cta="Стать резидентом"
+      />
 
       {/* FORUM */}
       <section id="forum" className="py-28 md:py-36 bg-card/40 relative">
@@ -226,6 +237,14 @@ function Index() {
           </div>
         </div>
       </section>
+
+      <JoinCTA
+        variant="split"
+        eyebrow="Форум-группа"
+        title="Войдите в свой круг равных"
+        text="Места в форум-группах ограничены. Запишитесь на интервью, чтобы найти свой борд."
+        cta="Записаться"
+      />
 
       {/* ECOSYSTEM */}
       <section id="ecosystem" className="py-28 md:py-36">
@@ -265,6 +284,13 @@ function Index() {
           </div>
         </div>
       </section>
+
+      <JoinCTA
+        variant="banner"
+        eyebrow="Календарь резидента"
+        title="Получите доступ к закрытым событиям клуба"
+        cta="Стать резидентом"
+      />
 
       {/* FOUNDER */}
       <section className="py-28 md:py-36 bg-card/40">
@@ -314,6 +340,8 @@ function Index() {
         </div>
       </section>
 
+      <JoinCTA variant="minimal" cta="Лично познакомиться с основателем" />
+
       {/* FOCUS */}
       <section id="focus" className="py-28 md:py-36">
         <div className="container-prose">
@@ -360,6 +388,14 @@ function Index() {
         </div>
       </section>
 
+      <JoinCTA
+        variant="outline"
+        eyebrow="Доступ к сделкам"
+        title="Откройте сделки за пределами рынка"
+        text="Резиденты получают приоритетный доступ к сделкам и аналитике клуба."
+        cta="Подать заявку"
+      />
+
       {/* DIGITAL */}
       <section id="digital" className="py-28 md:py-36 relative overflow-hidden">
         <img
@@ -392,6 +428,13 @@ function Index() {
           </div>
         </div>
       </section>
+
+      <JoinCTA
+        variant="banner"
+        eyebrow="OpenClaw"
+        title="Получите своего AI-консьержа"
+        cta="Стать резидентом"
+      />
 
       {/* RESIDENT PROFILE + JOIN */}
       <section id="join" className="py-28 md:py-36 bg-card/40">
