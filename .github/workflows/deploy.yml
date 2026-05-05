@@ -1,0 +1,68 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: ["main"]
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${SSH_KEY}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${SSH_HOST}" >> ~/.ssh/known_hosts
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      - name: Deploy (pull, build, restart)
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -o StrictHostKeyChecking=yes "${SSH_USER}@${SSH_HOST}" 'bash -se' <<'EOF'
+          set -euo pipefail
+
+          cd /opt/gordost
+
+          git fetch --all
+          git checkout main
+          git pull --ff-only origin main
+
+          if command -v npm >/dev/null 2>&1; then
+            npm ci
+            npm run build
+          else
+            echo "npm not found on server" >&2
+            exit 1
+          fi
+
+          # Best-effort restarts (safe to no-op)
+          if command -v systemctl >/dev/null 2>&1; then
+            systemctl restart gordost 2>/dev/null || true
+            systemctl restart gordost.service 2>/dev/null || true
+            systemctl reload caddy 2>/dev/null || true
+            systemctl restart caddy 2>/dev/null || true
+          fi
+
+          if command -v pm2 >/dev/null 2>&1; then
+            pm2 reload all 2>/dev/null || pm2 restart all 2>/dev/null || true
+          fi
+          EOF
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}

@@ -1,0 +1,18 @@
+gordost.club, www.gordost.club {
+  encode zstd gzip
+
+  # Reverse-proxy to the app process (TanStack Start SSR).
+  # Keep app listening on localhost:3000 and let Caddy terminate TLS.
+  reverse_proxy 127.0.0.1:3000
+
+  header {
+    # Basic hardening; adjust if you embed external iframes/scripts
+    X-Content-Type-Options "nosniff"
+    Referrer-Policy "strict-origin-when-cross-origin"
+    Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  }
+
+  log {
+    output file /var/log/caddy/gordost.club.access.log
+  }
+}
