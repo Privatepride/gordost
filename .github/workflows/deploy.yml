@@ -1,130 +1,44 @@
-name: Deploy to VPS
+name: Deploy to server
 
 on:
   push:
-    branches: ["main"]
-
-concurrency:
-  group: deploy-main
-  cancel-in-progress: true
+    branches: ["main", "master"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
+    env:
+      # GitHub Actions is moving JS actions off Node 20; this silences the warning and future-proofs the runner.
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
         with:
-          node-version: 20
-          cache: npm
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          command_timeout: 30m
+          debug: true
+          script_stop: true
+          script: |
+            set -euo pipefail
+            cd /opt/gordost
 
-      - name: Configure SSH
-        shell: bash
-        run: |
-          set -euo pipefail
-          : "${SSH_HOST:?Missing secret SSH_HOST}"
-          : "${SSH_USER:?Missing secret SSH_USER}"
-          : "${SSH_KEY:?Missing secret SSH_KEY}"
+            # Make deploy deterministic (avoid leftover local edits blocking pulls)
+            git fetch origin
+            git reset --hard "origin/$(git rev-parse --abbrev-ref HEAD)"
 
-          # If SSH_PORT secret exists but is empty, bash `:-` won't apply; normalize empties.
-          SSH_PORT="${SSH_PORT:-22}"
-          if [[ -z "${SSH_PORT}" ]]; then SSH_PORT=22; fi
+            # Workaround for npm optional-deps bug with Rollup native binary packages:
+            # https://github.com/npm/cli/issues/4828
+            rm -rf node_modules
 
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
+            PATH=/usr/bin:$PATH npm install --no-audit --no-fund --include=optional
+            PATH=/usr/bin:$PATH npm install --no-audit --no-fund --no-save @rollup/rollup-linux-x64-gnu || true
 
-          # Write key without mangling; strip accidental CRLF from pasted secrets.
-          printf '%s\n' "${SSH_KEY}" | tr -d '\r' > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null
-
-          touch ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-          if ! ssh-keyscan -T 10 -p "${SSH_PORT}" -H "${SSH_HOST}" >> ~/.ssh/known_hosts 2>/tmp/ssh-keyscan.err; then
-            echo "ssh-keyscan failed for ${SSH_HOST}:${SSH_PORT}. Will rely on StrictHostKeyChecking=accept-new." >&2
-            sed -n '1,200p' /tmp/ssh-keyscan.err >&2 || true
-          fi
-
-          cat > ~/.ssh/config <<EOF
-          Host deploy-target
-            HostName ${SSH_HOST}
-            User ${SSH_USER}
-            Port ${SSH_PORT}
-            IdentityFile ~/.ssh/deploy_key
-            IdentitiesOnly yes
-            StrictHostKeyChecking accept-new
-            UserKnownHostsFile ~/.ssh/known_hosts
-          EOF
-          chmod 600 ~/.ssh/config
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-
-      - name: Deploy (pull, build, restart)
-        shell: bash
-        run: |
-          set -euo pipefail
-          : "${SSH_HOST:?Missing secret SSH_HOST}"
-          : "${SSH_USER:?Missing secret SSH_USER}"
-
-          ssh deploy-target 'bash -se' <<'EOF'
-          set -euo pipefail
-
-          cd /opt/gordost
-
-          git fetch --all
-          git checkout main
-          git pull --ff-only origin main
-
-          if command -v npm >/dev/null 2>&1; then
-            # OOM-safe install (exit 137 == killed by memory pressure)
-            export NODE_OPTIONS="--max-old-space-size=4096"
-            export npm_config_jobs="2"
-
-            # Add swap if the server is low on RAM and swap is missing
-            if command -v free >/dev/null 2>&1; then
-              if ! swapon --show 2>/dev/null | grep -q .; then
-                if command -v fallocate >/dev/null 2>&1; then
-                  sudo fallocate -l 4G /swapfile || true
-                else
-                  sudo dd if=/dev/zero of=/swapfile bs=1M count=4096 status=none || true
-                fi
-                sudo chmod 600 /swapfile || true
-                sudo mkswap /swapfile >/dev/null 2>&1 || true
-                sudo swapon /swapfile || true
-              fi
-              free -h || true
-            fi
-
-            # Rollup/Vite rely on platform-specific optional deps on Linux.
-            # Omitting optional deps breaks build (e.g. missing @rollup/rollup-linux-x64-gnu).
-            export npm_config_optional="true"
-            npm ci --no-audit --no-fund --prefer-offline
-            npm run build
-          else
-            echo "npm not found on server" >&2
-            exit 1
-          fi
-
-          # Best-effort restarts (safe to no-op)
-          if command -v systemctl >/dev/null 2>&1; then
-            systemctl restart gordost 2>/dev/null || true
-            systemctl restart gordost.service 2>/dev/null || true
-            systemctl reload caddy 2>/dev/null || true
-            systemctl restart caddy 2>/dev/null || true
-          fi
-
-          if command -v pm2 >/dev/null 2>&1; then
-            pm2 reload all 2>/dev/null || pm2 restart all 2>/dev/null || true
-          fi
-          EOF
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
+            PATH=/usr/bin:$PATH npm run build
+            cat > dist/server/server.js <<'EOF'
+            export { createServerEntry, default } from "./index.js";
+            EOF
+            docker restart gordost-app
+            docker restart gordost-web
