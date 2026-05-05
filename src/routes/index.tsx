@@ -141,7 +141,7 @@ function Index() {
       <Nav />
 
       {/* HERO — крупный блок + сетка метрик как на atlanty.ru */}
-      <section className="relative min-h-[min(100svh,920px)] flex flex-col justify-end overflow-hidden pb-16 md:pb-24 pt-28">
+      <section className="relative overflow-hidden pt-40 md:pt-48 pb-20 md:pb-28">
         <img
           src={heroImg}
           alt=""
