@@ -29,14 +29,18 @@ jobs:
             git fetch origin
             git reset --hard "origin/$(git rev-parse --abbrev-ref HEAD)"
 
-            # Workaround for npm optional-deps bug with Rollup native binary packages:
+            # Workaround for npm optional-deps corruption with Rollup native binary packages:
             # https://github.com/npm/cli/issues/4828
             rm -rf node_modules
 
-            PATH=/usr/bin:$PATH npm install --no-audit --no-fund --include=optional
-            PATH=/usr/bin:$PATH npm install --no-audit --no-fund --no-save @rollup/rollup-linux-x64-gnu || true
+            PATH=/usr/bin:$PATH npm ci --no-audit --no-fund --include=optional
 
-            PATH=/usr/bin:$PATH npm run build
+            PATH=/usr/bin:$PATH npm run build || {
+              echo "build failed; retrying rollup native install + rebuild..."
+              PATH=/usr/bin:$PATH npm install --no-audit --no-fund --no-save @rollup/rollup-linux-x64-gnu || true
+              PATH=/usr/bin:$PATH npm rebuild rollup || true
+              PATH=/usr/bin:$PATH npm run build
+            }
             cat > dist/server/server.js <<'EOF'
             export { createServerEntry, default } from "./index.js";
             EOF
