@@ -25,8 +25,8 @@
   --color-ring: var(--ring);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
-  --font-display: "Cormorant Garamond", "Playfair Display", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Copperplate", "Times New Roman", Times, serif;
+  --font-sans: "Mazzard H", system-ui, sans-serif;
 }
 
 :root {
@@ -84,7 +84,6 @@
   body {
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
     background: var(--gradient-bg);
     background-attachment: fixed;
     min-height: 100vh;
@@ -104,9 +103,14 @@
 
 @layer utilities {
   .text-gold { color: var(--gold); }
-  .bg-gold { background: var(--gradient-gold); color: var(--primary-foreground); }
+  .bg-gold {
+    font-family: var(--font-display);
+    background: var(--gradient-gold);
+    color: var(--primary-foreground);
+  }
   .border-gold { border-color: var(--gold); }
   .gold-gradient {
+    font-family: var(--font-display);
     background: var(--gradient-gold);
     -webkit-background-clip: text;
     background-clip: text;
@@ -126,13 +130,30 @@
 }
 
 @font-face {
-  font-family: "Cormorant Garamond";
-  font-style: normal; font-weight: 300 700; font-display: swap;
-  src: local("Cormorant Garamond"),
-       url("https://fonts.gstatic.com/s/cormorantgaramond/v16/co3YmX5slCNuHLi8bLeY9MK7whWMhyjornFLsS6V7w.woff2") format("woff2");
+  font-family: "Copperplate";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("./assets/fonts/copperplate-light.otf") format("opentype");
 }
 @font-face {
-  font-family: "Inter";
-  font-style: normal; font-weight: 100 900; font-display: swap;
-  src: url("https://fonts.gstatic.com/s/inter/v18/UcCo3FwrK3iLTcvneQg7Ca725JhhKnOqk.woff2") format("woff2");
+  font-family: "Copperplate";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/copperplate.otf") format("opentype");
+}
+@font-face {
+  font-family: "Copperplate";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./assets/fonts/copperplate-bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "Mazzard H";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/mazzard-h-regular.ttf") format("truetype");
 }

@@ -6,7 +6,7 @@ const links = [
   { href: "#forum", label: "Форум-группы" },
   { href: "#ecosystem", label: "Экосистема" },
   { href: "#focus", label: "Инвестиции" },
-  { href: "#digital", label: "OpenClaw" },
+  { href: "#digital", label: "Консьерж" },
   { href: "#join", label: "Вступить" },
 ];
 
