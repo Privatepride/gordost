@@ -35,12 +35,10 @@ jobs:
 
             PATH=/usr/bin:$PATH npm ci --no-audit --no-fund --include=optional
 
-            PATH=/usr/bin:$PATH npm run build || {
-              echo "build failed; retrying rollup native install + rebuild..."
-              PATH=/usr/bin:$PATH npm install --no-audit --no-fund --no-save @rollup/rollup-linux-x64-gnu || true
-              PATH=/usr/bin:$PATH npm rebuild rollup || true
-              PATH=/usr/bin:$PATH npm run build
-            }
+            # npm may still skip this optional dep on some runners; install it explicitly.
+            PATH=/usr/bin:$PATH npm install --no-audit --no-fund --no-save @rollup/rollup-linux-x64-gnu
+            PATH=/usr/bin:$PATH npm rebuild rollup || true
+            PATH=/usr/bin:$PATH npm run build
             # IMPORTANT: appleboy/ssh-action may inject `script_stop` sentinel lines around
             # shell control structures; avoid heredocs here because they corrupt the outfile.
             printf '%s\n' 'export { createServerEntry, default } from "./index.js";' > dist/server/server.js
