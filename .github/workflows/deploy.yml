@@ -17,6 +17,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
       - name: Configure SSH
         shell: bash
         run: |
@@ -44,7 +50,26 @@ jobs:
           git pull --ff-only origin main
 
           if command -v npm >/dev/null 2>&1; then
-            npm ci
+            # OOM-safe install (exit 137 == killed by memory pressure)
+            export NODE_OPTIONS="--max-old-space-size=4096"
+            export npm_config_jobs="2"
+
+            # Add swap if the server is low on RAM and swap is missing
+            if command -v free >/dev/null 2>&1; then
+              if ! swapon --show 2>/dev/null | grep -q .; then
+                if command -v fallocate >/dev/null 2>&1; then
+                  sudo fallocate -l 4G /swapfile || true
+                else
+                  sudo dd if=/dev/zero of=/swapfile bs=1M count=4096 status=none || true
+                fi
+                sudo chmod 600 /swapfile || true
+                sudo mkswap /swapfile >/dev/null 2>&1 || true
+                sudo swapon /swapfile || true
+              fi
+              free -h || true
+            fi
+
+            npm ci --no-audit --no-fund --prefer-offline --omit=optional
             npm run build
           else
             echo "npm not found on server" >&2
