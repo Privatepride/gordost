@@ -103,7 +103,10 @@ jobs:
               free -h || true
             fi
 
-            npm ci --no-audit --no-fund --prefer-offline --omit=optional
+            # Rollup/Vite rely on platform-specific optional deps on Linux.
+            # Omitting optional deps breaks build (e.g. missing @rollup/rollup-linux-x64-gnu).
+            export npm_config_optional="true"
+            npm ci --no-audit --no-fund --prefer-offline
             npm run build
           else
             echo "npm not found on server" >&2
