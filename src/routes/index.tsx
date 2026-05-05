@@ -151,75 +151,48 @@ function Index() {
         <div className="absolute inset-0 bg-gradient-to-r from-background from-45% via-transparent to-transparent" />
 
         <div className="container-prose relative z-10">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-end">
-            <div className="lg:col-span-7">
-              <p className="text-[11px] uppercase tracking-[0.45em] text-gold mb-5">Инвестиционный клуб · Москва и СПб</p>
+          <div className="max-w-3xl">
+            <p className="text-[11px] uppercase tracking-[0.45em] text-gold mb-5">Инвестиционный клуб · Москва и СПб</p>
 
-              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.98] mb-6">
-                <span className="block gold-gradient">ГОРДОСТЬ</span>
-                <span className="block text-foreground/95 text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-4 font-light tracking-tight">
-                  Правильные люди
-                  <br />
-                  в правильном месте
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.98] mb-6">
+              <span className="block gold-gradient">ГОРДОСТЬ</span>
+              <span className="block text-foreground/95 text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-4 font-light tracking-tight">
+                Правильные люди
+                <br />
+                в правильном месте
+              </span>
+            </h1>
+
+            <p className="text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed mb-3">
+              Закрытое сообщество инвесторов с капиталом{" "}
+              <span className="text-gold">от 50 млн ₽</span>. Объединяем ресурсы, опыт и капитал для устойчивого роста
+              благосостояния.
+            </p>
+
+            <div className="flex flex-wrap gap-2 mt-7">
+              {["Проверенные сделки", "Сильное окружение", "Совместное развитие"].map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-gold/30 bg-background/40 px-4 py-1.5 text-[11px] uppercase tracking-[0.18em] text-gold/90"
+                >
+                  {tag}
                 </span>
-              </h1>
-
-              <p className="text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed mb-3">
-                Закрытое сообщество инвесторов с капиталом{" "}
-                <span className="text-gold">от 50 млн ₽</span>. Объединяем ресурсы, опыт и капитал для устойчивого роста
-                благосостояния.
-              </p>
-              <p className="text-sm md:text-base text-muted-foreground/90 max-w-xl leading-relaxed">
-                Две столицы — единое пространство. Офлайн-инфраструктура, регулярные встречи и бизнес-сообщество в
-                Москве и Санкт-Петербурге.
-              </p>
-
-              <div className="flex flex-wrap gap-2 mt-7">
-                {["Проверенные сделки", "Сильное окружение", "Совместное развитие"].map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-gold/30 bg-background/40 px-4 py-1.5 text-[11px] uppercase tracking-[0.18em] text-gold/90"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex flex-wrap gap-3 mt-8">
-                <a
-                  href="#join"
-                  className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-primary-foreground text-[11px] uppercase tracking-[0.2em] hover:opacity-90 transition-opacity"
-                >
-                  Стать резидентом <span aria-hidden>→</span>
-                </a>
-                <a
-                  href="#about"
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-8 py-3.5 text-foreground text-[11px] uppercase tracking-[0.2em] hover:border-gold hover:text-gold transition-colors"
-                >
-                  О клубе
-                </a>
-              </div>
+              ))}
             </div>
 
-            <div className="lg:col-span-5">
-              <div className="grid grid-cols-2 gap-3">
-                {heroStats.map((s) => (
-                  <div
-                    key={s.sub}
-                    className="rounded-2xl border border-border bg-background/60 backdrop-blur-sm px-5 py-5 md:px-6 md:py-6"
-                  >
-                    <div className="font-display text-3xl md:text-4xl gold-gradient leading-none">
-                      {s.num}
-                      {s.line ? (
-                        <span className="text-lg md:text-xl text-foreground/80 font-sans align-top ml-0.5">{s.line}</span>
-                      ) : null}
-                    </div>
-                    <p className="mt-3 text-[11px] md:text-xs uppercase tracking-[0.12em] text-muted-foreground leading-snug">
-                      {s.sub}
-                    </p>
-                  </div>
-                ))}
-              </div>
+            <div className="flex flex-wrap gap-3 mt-8">
+              <a
+                href="#join"
+                className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-primary-foreground text-[11px] uppercase tracking-[0.2em] hover:opacity-90 transition-opacity"
+              >
+                Стать резидентом <span aria-hidden>→</span>
+              </a>
+              <a
+                href="#about"
+                className="inline-flex items-center gap-2 rounded-full border border-border px-8 py-3.5 text-foreground text-[11px] uppercase tracking-[0.2em] hover:border-gold hover:text-gold transition-colors"
+              >
+                О клубе
+              </a>
             </div>
           </div>
         </div>
