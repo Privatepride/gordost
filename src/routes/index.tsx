@@ -169,6 +169,21 @@ function Index() {
                 <span className="text-gold">от 50 млн ₽</span>. Объединяем ресурсы, опыт и капитал для устойчивого роста
                 благосостояния.
               </p>
+              <p className="text-sm md:text-base text-muted-foreground/90 max-w-xl leading-relaxed">
+                Две столицы — единое пространство. Офлайн-инфраструктура, регулярные встречи и бизнес-сообщество в
+                Москве и Санкт-Петербурге.
+              </p>
+
+              <div className="flex flex-wrap gap-2 mt-7">
+                {["Проверенные сделки", "Сильное окружение", "Совместное развитие"].map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-gold/30 bg-background/40 px-4 py-1.5 text-[11px] uppercase tracking-[0.18em] text-gold/90"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
 
               <div className="flex flex-wrap gap-3 mt-8">
                 <a
