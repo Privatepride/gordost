@@ -169,10 +169,6 @@ function Index() {
                 <span className="text-gold">от 50 млн ₽</span>. Объединяем ресурсы, опыт и капитал для устойчивого роста
                 благосостояния.
               </p>
-              <p className="text-sm md:text-base text-muted-foreground/90 max-w-xl leading-relaxed">
-                Две столицы — единое пространство. Офлайн-инфраструктура, регулярные встречи и бизнес-сообщество в
-                Москве и Санкт-Петербурге.
-              </p>
 
               <div className="flex flex-wrap gap-2 mt-7">
                 {["Проверенные сделки", "Сильное окружение", "Совместное развитие"].map((tag) => (
