@@ -17,6 +17,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          # GitHub Actions expressions can't reliably default secrets; keep standard SSH port here.
+          # If you need a non-22 port, change this value (or switch to a repo variable).
           port: 22
           command_timeout: 30m
           debug: true
@@ -27,20 +29,50 @@ jobs:
 
             # Make deploy deterministic (avoid leftover local edits blocking pulls)
             git fetch origin
-            git reset --hard "origin/$(git rev-parse --abbrev-ref HEAD)"
+            git checkout main
+            git reset --hard origin/main
+
+            # OOM mitigation for npm on small VPS
+            export NODE_OPTIONS="--max-old-space-size=4096"
+            export npm_config_jobs="2"
+            export npm_config_foreground_scripts="true"
+
+            # Add swap if missing (helps npm ci on low RAM)
+            if command -v free >/dev/null 2>&1; then
+              if ! swapon --show 2>/dev/null | grep -q .; then
+                if command -v fallocate >/dev/null 2>&1; then
+                  sudo fallocate -l 4G /swapfile || true
+                else
+                  sudo dd if=/dev/zero of=/swapfile bs=1M count=4096 status=none || true
+                fi
+                sudo chmod 600 /swapfile || true
+                sudo mkswap /swapfile >/dev/null 2>&1 || true
+                sudo swapon /swapfile || true
+              fi
+              free -h || true
+            fi
 
             # Workaround for npm optional-deps corruption with Rollup native binary packages:
             # https://github.com/npm/cli/issues/4828
             rm -rf node_modules
 
+            # Use system npm (avoid nvm/shims picking unexpected npm/node on servers)
             PATH=/usr/bin:$PATH npm ci --no-audit --no-fund --include=optional
 
-            # npm may still skip this optional dep on some runners; install it explicitly.
-            PATH=/usr/bin:$PATH npm install --no-audit --no-fund --no-save @rollup/rollup-linux-x64-gnu
+            # npm may still skip this optional dep on some installs; repair explicitly.
+            if ! node -e "require('@rollup/rollup-linux-x64-gnu')" >/dev/null 2>&1; then
+              ROLLUP_VER="$(node -p "require('./node_modules/rollup/package.json').version")"
+              echo "Missing @rollup/rollup-linux-x64-gnu after npm ci; installing @rollup/rollup-linux-x64-gnu@${ROLLUP_VER}" >&2
+              PATH=/usr/bin:$PATH npm install --no-audit --no-fund --no-save "@rollup/rollup-linux-x64-gnu@${ROLLUP_VER}"
+            fi
+
+            node -e "require('@rollup/rollup-linux-x64-gnu'); console.log('rollup native ok')"
             PATH=/usr/bin:$PATH npm rebuild rollup || true
             PATH=/usr/bin:$PATH npm run build
+
             # IMPORTANT: appleboy/ssh-action may inject `script_stop` sentinel lines around
             # shell control structures; avoid heredocs here because they corrupt the outfile.
             printf '%s\n' 'export { createServerEntry, default } from "./index.js";' > dist/server/server.js
+
             docker restart gordost-app
             docker restart gordost-web
