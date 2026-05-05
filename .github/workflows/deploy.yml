@@ -17,24 +17,64 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
       - name: Configure SSH
         shell: bash
         run: |
           set -euo pipefail
+          : "${SSH_HOST:?Missing secret SSH_HOST}"
+          : "${SSH_USER:?Missing secret SSH_USER}"
+          : "${SSH_KEY:?Missing secret SSH_KEY}"
+
+          # If SSH_PORT secret exists but is empty, bash `:-` won't apply; normalize empties.
+          SSH_PORT="${SSH_PORT:-22}"
+          if [[ -z "${SSH_PORT}" ]]; then SSH_PORT=22; fi
+
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "${SSH_KEY}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "${SSH_HOST}" >> ~/.ssh/known_hosts
+
+          # Write key without mangling; strip accidental CRLF from pasted secrets.
+          printf '%s\n' "${SSH_KEY}" | tr -d '\r' > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null
+
+          touch ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          if ! ssh-keyscan -T 10 -p "${SSH_PORT}" -H "${SSH_HOST}" >> ~/.ssh/known_hosts 2>/tmp/ssh-keyscan.err; then
+            echo "ssh-keyscan failed for ${SSH_HOST}:${SSH_PORT}. Will rely on StrictHostKeyChecking=accept-new." >&2
+            sed -n '1,200p' /tmp/ssh-keyscan.err >&2 || true
+          fi
+
+          cat > ~/.ssh/config <<EOF
+          Host deploy-target
+            HostName ${SSH_HOST}
+            User ${SSH_USER}
+            Port ${SSH_PORT}
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking accept-new
+            UserKnownHostsFile ~/.ssh/known_hosts
+          EOF
+          chmod 600 ~/.ssh/config
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
       - name: Deploy (pull, build, restart)
         shell: bash
         run: |
           set -euo pipefail
-          ssh -o StrictHostKeyChecking=yes "${SSH_USER}@${SSH_HOST}" 'bash -se' <<'EOF'
+          : "${SSH_HOST:?Missing secret SSH_HOST}"
+          : "${SSH_USER:?Missing secret SSH_USER}"
+
+          ssh deploy-target 'bash -se' <<'EOF'
           set -euo pipefail
 
           cd /opt/gordost
@@ -44,7 +84,26 @@ jobs:
           git pull --ff-only origin main
 
           if command -v npm >/dev/null 2>&1; then
-            npm ci
+            # OOM-safe install (exit 137 == killed by memory pressure)
+            export NODE_OPTIONS="--max-old-space-size=4096"
+            export npm_config_jobs="2"
+
+            # Add swap if the server is low on RAM and swap is missing
+            if command -v free >/dev/null 2>&1; then
+              if ! swapon --show 2>/dev/null | grep -q .; then
+                if command -v fallocate >/dev/null 2>&1; then
+                  sudo fallocate -l 4G /swapfile || true
+                else
+                  sudo dd if=/dev/zero of=/swapfile bs=1M count=4096 status=none || true
+                fi
+                sudo chmod 600 /swapfile || true
+                sudo mkswap /swapfile >/dev/null 2>&1 || true
+                sudo swapon /swapfile || true
+              fi
+              free -h || true
+            fi
+
+            npm ci --no-audit --no-fund --prefer-offline --omit=optional
             npm run build
           else
             echo "npm not found on server" >&2
