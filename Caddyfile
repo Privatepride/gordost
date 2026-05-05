@@ -1,18 +1,37 @@
-gordost.club, www.gordost.club {
-  encode zstd gzip
+{
+  # Keep our internal listener ports (HAProxy routes public :80/:443 here).
+  http_port 9080
+  https_port 9443
+}
 
-  # Reverse-proxy to the app process (TanStack Start SSR).
-  # Keep app listening on localhost:3000 and let Caddy terminate TLS.
-  reverse_proxy 127.0.0.1:3000
-
-  header {
-    # Basic hardening; adjust if you embed external iframes/scripts
-    X-Content-Type-Options "nosniff"
-    Referrer-Policy "strict-origin-when-cross-origin"
-    Permissions-Policy "geolocation=(), microphone=(), camera=()"
-  }
-
-  log {
-    output file /var/log/caddy/gordost.club.access.log
+http://gordost.club:9080 {
+  # Public HTTP should not serve the site as "plain" (browsers show "Not secure").
+  # ACME HTTP-01 challenges must still work on :80.
+  route {
+    @acme path /.well-known/acme-challenge/*
+    handle @acme {
+      # Let Caddy answer the ACME challenge (don't proxy to the app).
+      file_server
+    }
+    redir https://gordost.club{uri} permanent
   }
 }
+
+http://www.gordost.club:9080 {
+  route {
+    @acme path /.well-known/acme-challenge/*
+    handle @acme {
+      file_server
+    }
+    redir https://gordost.club{uri} permanent
+  }
+}
+
+https://gordost.club:9443 {
+  reverse_proxy 127.0.0.1:9101
+}
+
+https://www.gordost.club:9443 {
+  redir https://gordost.club{uri} permanent
+}
+

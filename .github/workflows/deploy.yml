@@ -41,8 +41,8 @@ jobs:
               PATH=/usr/bin:$PATH npm rebuild rollup || true
               PATH=/usr/bin:$PATH npm run build
             }
-            cat > dist/server/server.js <<'EOF'
-            export { createServerEntry, default } from "./index.js";
-            EOF
+            # IMPORTANT: appleboy/ssh-action may inject `script_stop` sentinel lines around
+            # shell control structures; avoid heredocs here because they corrupt the outfile.
+            printf '%s\n' 'export { createServerEntry, default } from "./index.js";' > dist/server/server.js
             docker restart gordost-app
             docker restart gordost-web
