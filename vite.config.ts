@@ -4,6 +4,15 @@
 //     componentTagger (dev-only), VITE_* env injection, @ path alias, React/TanStack dedupe,
 //     error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... } }) if needed.
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+// Vite's config loader can end up resolving the CJS entry; we need the ESM build.
+import { defineConfig } from "@lovable.dev/vite-tanstack-config/dist/index.js";
 
-export default defineConfig();
+export default defineConfig({
+  vite: {
+    // Behind a reverse proxy; allow real Host headers in preview.
+    preview: {
+      host: true,
+      allowedHosts: true,
+    },
+  },
+});
