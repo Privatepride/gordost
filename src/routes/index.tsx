@@ -169,6 +169,21 @@ function Index() {
                 <span className="text-gold">от 50 млн ₽</span>. Объединяем ресурсы, опыт и капитал для устойчивого роста
                 благосостояния.
               </p>
+              <p className="text-sm md:text-base text-muted-foreground/90 max-w-xl leading-relaxed">
+                Две столицы — единое пространство. Офлайн-инфраструктура, регулярные встречи и бизнес-сообщество в
+                Москве и Санкт-Петербурге.
+              </p>
+
+              <div className="flex flex-wrap gap-2 mt-7">
+                {["Проверенные сделки", "Сильное окружение", "Совместное развитие"].map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-gold/30 bg-background/40 px-4 py-1.5 text-[11px] uppercase tracking-[0.18em] text-gold/90"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
 
               <div className="flex flex-wrap gap-3 mt-8">
                 <a
@@ -412,7 +427,15 @@ function Index() {
             ))}
           </div>
 
-          <div className="mt-10 grid md:grid-cols-2 gap-4">
+          <div className="mt-10 rounded-2xl border border-gold/25 bg-background/40 p-8">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-gold mb-2">Аналитика</div>
+            <p className="text-foreground/90 leading-relaxed text-sm md:text-base">
+              Каждый месяц резиденты получают глубокие отраслевые исследования от экспертов, при помощи ИИ-сервисов
+              клуба и от платформы «Стратагония» (резидент Сколково).
+            </p>
+          </div>
+
+          <div className="mt-4 grid md:grid-cols-2 gap-4">
             <div className="rounded-2xl border border-gold/25 bg-background/40 p-8">
               <div className="text-[10px] uppercase tracking-[0.2em] text-gold mb-2">Белый и чёрный списки</div>
               <p className="text-foreground/90 leading-relaxed text-sm md:text-base">
