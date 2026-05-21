@@ -187,21 +187,49 @@ const toolBadges = [
   "БЛАГОТВОРИТЕЛЬНОСТЬ",
 ];
 
+const toolIcons: Record<string, React.ReactNode> = {
+  "ФОРУМ-ГРУППЫ": <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />,
+  "ПАНЕЛЬНЫЕ ДИСКУССИИ": <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />,
+  "СПОРТ И ПУТЕШЕСТВИЯ": <path d="M3 12l2-2 7-7 7 7 2 2M5 10v10a1 1 0 001 1h3m10-11l-2-2m2 2v10a1 1 0 01-1 1h-3" />,
+  "ИНВЕСТКОМИТЕТЫ": <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />,
+  "МАСТЕРМАЙНДЫ": <path d="M13 10V3L4 14h7v7l9-11h-7z" />,
+  "AI-СКОРИНГ": <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />,
+  "ЗАКРЫТЫЕ МЕРОПРИЯТИЯ": <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />,
+  "АНАЛИТИКА": <path d="M9 17V9m4 8V5m4 12v-6m-13 9h18" />,
+  "ОТРАСЛЕВЫЕ ИССЛЕДОВАНИЯ": <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />,
+  "ПРОГРАММА МЕНТОРИНГА": <path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />,
+  "СТРАТЕГИЯ НАСЛЕДИЯ": <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />,
+  "БЛАГОТВОРИТЕЛЬНОСТЬ": <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />,
+};
+
 function ToolsStrip() {
   return (
-    <section className="border-y border-border bg-card/30" aria-label="Инструменты клуба">
-      <div className="container-prose py-8 md:py-10">
-        <p className="text-center text-[10px] uppercase tracking-[0.35em] text-gold/80 mb-6">
-          Инструменты клуба
-        </p>
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+    <section className="relative py-20 md:py-28" aria-label="Инструменты клуба">
+      <div className="container-prose">
+        <div className="flex items-center gap-6 mb-12">
+          <h2 className="text-[10px] uppercase tracking-[0.5em] text-gold font-bold whitespace-nowrap">
+            Инструменты клуба
+          </h2>
+          <div className="h-px w-full bg-gradient-to-r from-gold/40 to-transparent" />
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {toolBadges.map((label) => (
-            <span
+            <div
               key={label}
-              className="rounded-full border border-gold/25 bg-background/40 px-4 py-2 text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-gold/95"
+              className="group cursor-default p-6 bg-card/40 border border-border rounded-2xl hover:bg-gradient-to-br hover:from-card hover:to-secondary hover:border-gold/40 transition-all duration-500"
             >
-              {label}
-            </span>
+              <div className="flex flex-col gap-4">
+                <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-gold/10 text-gold">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                    {toolIcons[label] ?? toolIcons["ФОРУМ-ГРУППЫ"]}
+                  </svg>
+                </div>
+                <span className="uppercase text-[10px] font-semibold tracking-[0.22em] text-foreground/90 group-hover:text-gold transition-colors">
+                  {label}
+                </span>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -214,39 +242,81 @@ function Index() {
     <div id="top" className="min-h-screen text-foreground relative z-[1]">
       <Nav />
 
-      {/* HERO */}
-      <section className="relative overflow-hidden pt-40 md:pt-48 pb-20 md:pb-28">
-        <img
-          src={heroImg}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-[0.35]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/75 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background from-45% via-transparent to-transparent" />
+      {/* HERO — Elite mosaic */}
+      <section className="relative overflow-hidden pt-32 md:pt-40 pb-16 md:pb-24">
+        <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] rounded-full bg-gold/[0.06] blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/3 -left-32 w-[28rem] h-[28rem] rounded-full bg-gold/[0.04] blur-[100px] pointer-events-none" />
 
         <div className="container-prose relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.98] mb-8">
-              <span className="block gold-gradient">ГОРДОСТЬ</span>
-            </h1>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* LEFT — Copy */}
+            <div className="relative z-10">
+              <div className="mb-8 flex items-center gap-4">
+                <span className="h-px w-16 bg-gradient-to-r from-gold to-transparent" />
+                <span className="uppercase tracking-[0.4em] text-[10px] font-semibold text-gold">
+                  Private Investment Community
+                </span>
+              </div>
 
-            <p className="text-xl md:text-2xl text-foreground/95 mb-2 font-light">
-              Инвестиционный клуб
-            </p>
-            <p className="text-base md:text-lg text-gold italic mb-8">
-              для инвесторов с капиталом от 50 млн
-            </p>
+              <h1 className="font-display text-7xl sm:text-8xl md:text-9xl leading-[0.95] mb-8 gold-gradient">
+                ГОРДОСТЬ
+              </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed mb-10">
-              Для тех, кто приумножает капитал через силу сообщества.
-            </p>
+              <div className="space-y-2 mb-8">
+                <p className="text-xl md:text-2xl font-light tracking-tight text-foreground/95">
+                  Инвестиционный клуб
+                </p>
+                <p className="text-base md:text-lg italic text-gold/85">
+                  для инвесторов с капиталом от 50 млн
+                </p>
+              </div>
 
-            <a
-              href="#join"
-              className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-primary-foreground text-[11px] uppercase tracking-[0.2em] hover:opacity-90 transition-opacity"
-            >
-              Стать резидентом <span aria-hidden>→</span>
-            </a>
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg mb-10">
+                Для тех, кто приумножает капитал через силу сообщества.
+              </p>
+
+              <a
+                href="#join"
+                className="group relative inline-flex items-center gap-2 overflow-hidden bg-gold px-12 py-5 text-primary-foreground text-[11px] uppercase tracking-[0.2em] font-semibold transition-all duration-500 hover:shadow-[0_0_40px_rgba(221,201,169,0.3)]"
+              >
+                <span className="relative z-10">Стать резидентом</span>
+                <span aria-hidden className="relative z-10">→</span>
+              </a>
+            </div>
+
+            {/* RIGHT — Mosaic */}
+            <div className="relative w-full h-[480px] md:h-[600px]">
+              <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 gap-3 md:gap-4">
+                <div className="col-span-7 row-span-8 rounded-[2rem] overflow-hidden border border-gold/20 shadow-2xl z-20">
+                  <img src={founderImg} alt="Основатель клуба" className="w-full h-full object-cover" />
+                </div>
+
+                <div className="col-span-5 row-span-4 rounded-[2rem] p-6 md:p-8 flex flex-col justify-end translate-y-4 shadow-xl z-30 bg-gold">
+                  <span className="font-display text-4xl md:text-5xl text-primary-foreground">2</span>
+                  <span className="text-[10px] uppercase font-semibold text-primary-foreground/70 tracking-[0.2em] mt-2">
+                    Города клуба
+                  </span>
+                </div>
+
+                <div className="col-start-8 col-span-5 row-start-5 row-span-4 rounded-[2rem] overflow-hidden border border-border opacity-50 hover:opacity-100 transition-opacity duration-700">
+                  <img src={citiesImg} alt="" className="w-full h-full object-cover" />
+                </div>
+
+                <div className="col-start-3 col-span-6 row-start-9 row-span-4 rounded-[2rem] p-6 md:p-8 flex flex-col justify-center z-40 glass">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-display text-3xl md:text-4xl gold-gradient">от 50</span>
+                    <span className="font-display text-lg md:text-xl text-gold">млн ₽</span>
+                  </div>
+                  <span className="text-[10px] uppercase font-medium text-muted-foreground tracking-[0.2em] mt-2">
+                    Минимальный капитал
+                  </span>
+                </div>
+
+                <div className="col-start-9 col-span-4 row-start-9 row-span-3 rounded-[2rem] overflow-hidden border border-border grayscale">
+                  <img src={heroImg} alt="" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
