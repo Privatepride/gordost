@@ -2,6 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import heroImg from "@/assets/hero.jpg";
 import founderImg from "@/assets/founder.png";
 import citiesImg from "@/assets/cities.jpg";
+import boardroomImg from "@/assets/boardroom.jpg";
+import lifestyleImg from "@/assets/lifestyle.jpg";
+import dinnerImg from "@/assets/dinner.jpg";
+import aiAbstractImg from "@/assets/ai-abstract.jpg";
+import architectureImg from "@/assets/architecture.jpg";
+import mentorshipImg from "@/assets/mentorship.jpg";
 import { Nav } from "@/components/site/Nav";
 import { SectionLabel, SectionTitle } from "@/components/site/SectionTitle";
 import { JoinCTA } from "@/components/site/JoinCTA";
@@ -23,38 +29,28 @@ export const Route = createFileRoute("/")({
 });
 
 const aboutBullets = [
-  {
-    t: "Спокойствие за решения",
-    d: "У вас есть данные, экспертиза и люди, которым вы доверяете.",
-  },
-  {
-    t: "Окружение, которое тянет вверх",
-    d: "Люди вашего масштаба, которые радуются вашим победам.",
-  },
-  {
-    t: "1 + 1 = 11",
-    d: "Крупные сделки, которые недоступны в одиночку, открываются для вас в клубе.",
-  },
-  {
-    t: "Яркость жизни",
-    d: "ИнвестБаня, путешествия, закрытые ужины с визионерами и форум-группы — место, где можно быть собой.",
-  },
+  { t: "Спокойствие за решения", d: "У вас есть данные, экспертиза и люди, которым вы доверяете." },
+  { t: "Окружение, которое тянет вверх", d: "Люди вашего масштаба, которые радуются вашим победам." },
+  { t: "1 + 1 = 11", d: "Крупные сделки, которые недоступны в одиночку, открываются для вас в клубе." },
+  { t: "Яркость жизни", d: "ИнвестБаня, путешествия, закрытые ужины с визионерами и форум-группы — место, где можно быть собой." },
 ];
 
 const howItWorks = [
   {
     n: "01",
     t: "Инвестиционная инфраструктура",
+    img: boardroomImg,
     items: [
       "Первичный Due Diligence — собственная AI-скоринговая система отбора по 136 параметрам.",
       "ИнвестКомитеты — публичный разбор сделок с экспертами и аналитиками клуба.",
       "Инвестиционный дайджест — новости, стратегии и сделки резидентов.",
-      "Разбор личной стратегии — ваш персональный совет директоров из коллективного опыта.",
+      "Разбор личной стратегии — ваш персональный совет директоров.",
     ],
   },
   {
     n: "02",
     t: "Социальный капитал",
+    img: mentorshipImg,
     items: [
       "Форум-группы — близкое окружение, поддержка в личных и рабочих вопросах.",
       "Умные связи — AI подбирает партнёра для эффективного знакомства tet-a-tet.",
@@ -65,6 +61,7 @@ const howItWorks = [
   {
     n: "03",
     t: "Lifestyle и «Третье место»",
+    img: lifestyleImg,
     items: [
       "ИнвестБаня — фирменный ритуал и место неприкрытого нетворкинга.",
       "Закрытые мероприятия — ужины, бизнес-завтраки, камерные форматы.",
@@ -75,6 +72,7 @@ const howItWorks = [
   {
     n: "04",
     t: "Аналитика и обучение",
+    img: aiAbstractImg,
     items: [
       "Аналитические отчёты от экспертов рынка.",
       "Отраслевые исследования и обзоры рынков.",
@@ -85,6 +83,7 @@ const howItWorks = [
   {
     n: "05",
     t: "Инструменты и сервисы",
+    img: architectureImg,
     items: [
       "Список проверенных подрядчиков.",
       "Спецусловия и бонусы от партнёров клуба.",
@@ -95,6 +94,7 @@ const howItWorks = [
   {
     n: "06",
     t: "Наследие и миссия",
+    img: dinnerImg,
     items: [
       "Стратегии для создания наследия.",
       "Программа «Наследники» — взаимодействие поколений.",
@@ -105,64 +105,25 @@ const howItWorks = [
 ];
 
 const foundation = [
-  {
-    t: "Игра в долгую",
-    d: "Стратегия устойчивого роста выше сиюминутной выгоды.",
-  },
-  {
-    t: "Добропорядочность и честность",
-    d: "Высокие стандарты экологичности и открытости формируют безукоризненный уровень доверия.",
-  },
-  {
-    t: "Взаимная поддержка",
-    d: "Партнёрство — фундамент отношений между резидентами клуба.",
-  },
-  {
-    t: "Социальная ответственность",
-    d: "Благотворительные и социальные инициативы — часть жизни клуба.",
-  },
-  {
-    t: "Деньги",
-    d: "Резиденты зарабатывают на возможностях сообщества. Цель — устойчивое благосостояние, а не погоня за цифрой.",
-  },
-  {
-    t: "Сила, гордость, успех",
-    d: "Место, где сила, гордость и успех соединяются. Мы разделяем успех с резидентами.",
-  },
+  { t: "Игра в долгую", d: "Стратегия устойчивого роста выше сиюминутной выгоды." },
+  { t: "Добропорядочность и честность", d: "Высокие стандарты экологичности и открытости формируют безукоризненный уровень доверия." },
+  { t: "Взаимная поддержка", d: "Партнёрство — фундамент отношений между резидентами клуба." },
+  { t: "Социальная ответственность", d: "Благотворительные и социальные инициативы — часть жизни клуба." },
+  { t: "Деньги", d: "Резиденты зарабатывают на возможностях сообщества. Цель — устойчивое благосостояние, а не погоня за цифрой." },
+  { t: "Сила, гордость, успех", d: "Место, где сила, гордость и успех соединяются. Мы разделяем успех с резидентами." },
 ];
 
 const ecosystem = [
-  {
-    t: "ИнвестБаня",
-    d: "Уникальный формат: глубокий нетворкинг и обсуждение сделок в неформальной обстановке.",
-  },
-  {
-    t: "Панельные дискуссии",
-    d: "Разбор стратегий защиты активов и налогового планирования с ведущими экспертами.",
-  },
-  {
-    t: "Спорт и путешествия",
-    d: "Регаты, турниры, выезды и закрытые выставки — формируем общие воспоминания.",
-  },
-  {
-    t: "Встречи с экспертами",
-    d: "Прямой диалог с Андреем Плахотнюком и приглашёнными лидерами рынка.",
-  },
+  { t: "ИнвестБаня", d: "Уникальный формат: глубокий нетворкинг и обсуждение сделок в неформальной обстановке.", img: lifestyleImg },
+  { t: "Панельные дискуссии", d: "Разбор стратегий защиты активов и налогового планирования с ведущими экспертами.", img: boardroomImg },
+  { t: "Спорт и путешествия", d: "Регаты, турниры, выезды и закрытые выставки — формируем общие воспоминания.", img: architectureImg },
+  { t: "Встречи с экспертами", d: "Прямой диалог с Андреем Плахотнюком и приглашёнными лидерами рынка.", img: dinnerImg },
 ];
 
 const digital = [
-  {
-    t: "Умные связи",
-    d: "AI соединяет вас с теми резидентами, кто максимально полезен вашему текущему запросу.",
-  },
-  {
-    t: "База знаний в кармане",
-    d: "Библиотека шаблонов, юридических документов и резюме всех встреч в один клик.",
-  },
-  {
-    t: "Дайджесты смыслов",
-    d: "Краткие выжимки из обсуждений — не упустите важное в потоке сообщений.",
-  },
+  { t: "Умные связи", d: "AI соединяет вас с теми резидентами, кто максимально полезен вашему текущему запросу." },
+  { t: "База знаний в кармане", d: "Библиотека шаблонов, юридических документов и резюме всех встреч в один клик." },
+  { t: "Дайджесты смыслов", d: "Краткие выжимки из обсуждений — не упустите важное в потоке сообщений." },
 ];
 
 const steps = [
@@ -173,18 +134,9 @@ const steps = [
 ];
 
 const toolBadges = [
-  "ФОРУМ-ГРУППЫ",
-  "ПАНЕЛЬНЫЕ ДИСКУССИИ",
-  "СПОРТ И ПУТЕШЕСТВИЯ",
-  "ИНВЕСТКОМИТЕТЫ",
-  "МАСТЕРМАЙНДЫ",
-  "AI-СКОРИНГ",
-  "ЗАКРЫТЫЕ МЕРОПРИЯТИЯ",
-  "АНАЛИТИКА",
-  "ОТРАСЛЕВЫЕ ИССЛЕДОВАНИЯ",
-  "ПРОГРАММА МЕНТОРИНГА",
-  "СТРАТЕГИЯ НАСЛЕДИЯ",
-  "БЛАГОТВОРИТЕЛЬНОСТЬ",
+  "ФОРУМ-ГРУППЫ", "ПАНЕЛЬНЫЕ ДИСКУССИИ", "СПОРТ И ПУТЕШЕСТВИЯ", "ИНВЕСТКОМИТЕТЫ",
+  "МАСТЕРМАЙНДЫ", "AI-СКОРИНГ", "ЗАКРЫТЫЕ МЕРОПРИЯТИЯ", "АНАЛИТИКА",
+  "ОТРАСЛЕВЫЕ ИССЛЕДОВАНИЯ", "ПРОГРАММА МЕНТОРИНГА", "СТРАТЕГИЯ НАСЛЕДИЯ", "БЛАГОТВОРИТЕЛЬНОСТЬ",
 ];
 
 const toolIcons: Record<string, React.ReactNode> = {
@@ -237,12 +189,42 @@ function ToolsStrip() {
   );
 }
 
+/* Decorative full-bleed visual band with overlay headline */
+function VisualBand({
+  image,
+  eyebrow,
+  title,
+  height = "h-[420px] md:h-[520px]",
+}: {
+  image: string;
+  eyebrow: string;
+  title: React.ReactNode;
+  height?: string;
+}) {
+  return (
+    <section className={`relative ${height} overflow-hidden border-y border-gold/15`}>
+      <img src={image} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-background/30" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-background/50" />
+      <div className="container-prose relative z-10 h-full flex flex-col justify-center">
+        <div className="max-w-2xl">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="h-px w-12 bg-gold" />
+            <span className="text-[10px] uppercase tracking-[0.4em] text-gold font-semibold">{eyebrow}</span>
+          </div>
+          <h2 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.02]">{title}</h2>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Index() {
   return (
     <div id="top" className="min-h-screen text-foreground relative z-[1]">
       <Nav />
 
-      {/* HERO — Elite mosaic */}
+      {/* HERO — Elite mosaic with premium imagery */}
       <section className="relative overflow-hidden pt-32 md:pt-40 pb-16 md:pb-24">
         <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] rounded-full bg-gold/[0.06] blur-[120px] pointer-events-none" />
         <div className="absolute top-1/3 -left-32 w-[28rem] h-[28rem] rounded-full bg-gold/[0.04] blur-[100px] pointer-events-none" />
@@ -284,11 +266,11 @@ function Index() {
               </a>
             </div>
 
-            {/* RIGHT — Mosaic */}
+            {/* RIGHT — Mosaic with premium imagery */}
             <div className="relative w-full h-[480px] md:h-[600px]">
               <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 gap-3 md:gap-4">
                 <div className="col-span-7 row-span-8 rounded-[2rem] overflow-hidden border border-gold/20 shadow-2xl z-20">
-                  <img src={founderImg} alt="Основатель клуба" className="w-full h-full object-cover" />
+                  <img src={boardroomImg} alt="Закрытый клуб" className="w-full h-full object-cover" />
                 </div>
 
                 <div className="col-span-5 row-span-4 rounded-[2rem] p-6 md:p-8 flex flex-col justify-end translate-y-4 shadow-xl z-30 bg-gold">
@@ -298,8 +280,8 @@ function Index() {
                   </span>
                 </div>
 
-                <div className="col-start-8 col-span-5 row-start-5 row-span-4 rounded-[2rem] overflow-hidden border border-border opacity-50 hover:opacity-100 transition-opacity duration-700">
-                  <img src={citiesImg} alt="" className="w-full h-full object-cover" />
+                <div className="col-start-8 col-span-5 row-start-5 row-span-4 rounded-[2rem] overflow-hidden border border-border opacity-70 hover:opacity-100 transition-opacity duration-700">
+                  <img src={architectureImg} alt="" className="w-full h-full object-cover" />
                 </div>
 
                 <div className="col-start-3 col-span-6 row-start-9 row-span-4 rounded-[2rem] p-6 md:p-8 flex flex-col justify-center z-40 glass">
@@ -312,8 +294,8 @@ function Index() {
                   </span>
                 </div>
 
-                <div className="col-start-9 col-span-4 row-start-9 row-span-3 rounded-[2rem] overflow-hidden border border-border grayscale">
-                  <img src={heroImg} alt="" className="w-full h-full object-cover" />
+                <div className="col-start-9 col-span-4 row-start-9 row-span-3 rounded-[2rem] overflow-hidden border border-border">
+                  <img src={lifestyleImg} alt="" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>
@@ -323,27 +305,51 @@ function Index() {
 
       <ToolsStrip />
 
+      {/* Visual band — Manifesto */}
+      <VisualBand
+        image={dinnerImg}
+        eyebrow="Манифест"
+        title={<>Правильные люди <span className="gold-gradient">в правильном месте</span></>}
+      />
+
       {/* ABOUT */}
       <section id="about" className="py-20 md:py-28">
         <div className="container-prose">
-          <SectionLabel align="left">О клубе</SectionLabel>
-          <SectionTitle align="left" className="max-w-4xl">
-            Место, где сильные <span className="gold-gradient">делают сделки с сильными</span>
-          </SectionTitle>
+          <div className="grid lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-7">
+              <SectionLabel align="left">О клубе</SectionLabel>
+              <SectionTitle align="left" className="max-w-4xl">
+                Место, где сильные <span className="gold-gradient">делают сделки с сильными</span>
+              </SectionTitle>
 
-          <p className="max-w-2xl mt-8 text-lg text-muted-foreground leading-relaxed">
-            <span className="text-foreground/95 font-medium">«Гордость»</span> — это пространство возможностей,
-            вдохновляющее на рост и развитие. Среда, в которой ваш капитал начинает расти иначе — через людей,
-            доверие и коллективную экспертизу.
-          </p>
+              <p className="max-w-2xl mt-8 text-lg text-muted-foreground leading-relaxed">
+                <span className="text-foreground/95 font-medium">«Гордость»</span> — это пространство возможностей,
+                вдохновляющее на рост и развитие. Среда, в которой ваш капитал начинает расти иначе — через людей,
+                доверие и коллективную экспертизу.
+              </p>
+            </div>
 
-          <div className="grid sm:grid-cols-2 gap-4 mt-14">
-            {aboutBullets.map((p) => (
+            <div className="lg:col-span-5 relative">
+              <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-gold/20">
+                <img src={mentorshipImg} alt="" loading="lazy" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+              </div>
+              <div className="absolute -bottom-6 -left-6 glass rounded-2xl p-5 max-w-[220px]">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-gold mb-2">Резиденты</p>
+                <p className="font-display text-3xl gold-gradient">1 200+</p>
+                <p className="text-xs text-muted-foreground mt-1">в сообществе основателя</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-20">
+            {aboutBullets.map((p, i) => (
               <div
                 key={p.t}
-                className="rounded-2xl border border-border bg-card/40 p-8 hover:border-gold/35 transition-colors"
+                className="group relative rounded-2xl border border-border bg-card/40 p-8 hover:border-gold/40 hover:bg-card/70 transition-all duration-500"
               >
-                <h3 className="font-display text-xl md:text-2xl mb-3 text-foreground">{p.t}</h3>
+                <span className="absolute top-6 right-6 font-display text-xs text-gold/40 tabular-nums">0{i + 1}</span>
+                <h3 className="font-display text-xl md:text-2xl mb-3 text-foreground group-hover:text-gold transition-colors">{p.t}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{p.d}</p>
               </div>
             ))}
@@ -364,25 +370,35 @@ function Index() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section id="how" className="py-20 md:py-28 bg-card/35 border-y border-border">
+      {/* HOW IT WORKS — image cards */}
+      <section id="how" className="relative py-20 md:py-28 bg-card/35 border-y border-border">
         <div className="container-prose">
           <SectionLabel align="left">Как это работает</SectionLabel>
           <SectionTitle align="left" className="max-w-4xl">
             Шесть направлений, <span className="gold-gradient">которые работают на ваш капитал</span>
           </SectionTitle>
 
-          <div className="grid md:grid-cols-2 gap-4 mt-14">
+          <div className="grid md:grid-cols-2 gap-5 mt-14">
             {howItWorks.map((b) => (
-              <div
+              <article
                 key={b.n}
-                className="rounded-2xl border border-border bg-background/50 p-8 hover:border-gold/35 transition-colors"
+                className="group relative rounded-[2rem] overflow-hidden border border-border bg-background/60 hover:border-gold/35 transition-all duration-500"
               >
-                <div className="flex items-baseline gap-4 mb-5">
-                  <span className="font-display text-2xl gold-gradient tabular-nums">{b.n}</span>
-                  <h3 className="font-display text-xl md:text-2xl text-foreground">{b.t}</h3>
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src={b.img}
+                    alt=""
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+                  <div className="absolute top-5 left-5 flex items-center gap-3">
+                    <span className="font-display text-2xl gold-gradient tabular-nums">{b.n}</span>
+                    <span className="h-px w-10 bg-gold/60" />
+                  </div>
+                  <h3 className="absolute bottom-5 left-5 right-5 font-display text-2xl md:text-3xl text-foreground">{b.t}</h3>
                 </div>
-                <ul className="space-y-3">
+                <ul className="p-7 space-y-3">
                   {b.items.map((it) => (
                     <li key={it} className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed">
                       <span className="text-gold mt-1.5 shrink-0 text-[8px]">◆</span>
@@ -390,11 +406,18 @@ function Index() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Visual band — Lifestyle */}
+      <VisualBand
+        image={lifestyleImg}
+        eyebrow="Lifestyle"
+        title={<>Третье место, <span className="gold-gradient">где рождаются сделки</span></>}
+      />
 
       {/* FOUNDATION */}
       <section className="py-20 md:py-28">
@@ -405,11 +428,12 @@ function Index() {
           </SectionTitle>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-14">
-            {foundation.map((p) => (
+            {foundation.map((p, i) => (
               <div
                 key={p.t}
-                className="rounded-2xl border border-border bg-card/40 p-8 hover:border-gold/35 transition-colors"
+                className="relative rounded-2xl border border-border bg-card/40 p-8 pt-12 hover:border-gold/35 transition-colors"
               >
+                <span className="absolute top-5 right-6 font-display text-xs text-gold/35 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="font-display text-lg md:text-xl mb-3 text-gold">{p.t}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{p.d}</p>
               </div>
@@ -418,23 +442,31 @@ function Index() {
         </div>
       </section>
 
-      {/* ECOSYSTEM */}
-      <section id="ecosystem" className="py-20 md:py-28 bg-card/35">
+      {/* ECOSYSTEM — image cards */}
+      <section id="ecosystem" className="py-20 md:py-28 bg-card/35 border-y border-border">
         <div className="container-prose">
           <SectionLabel align="left">Экосистема клуба</SectionLabel>
           <SectionTitle align="left" className="max-w-3xl">
             Календарь и события
           </SectionTitle>
 
-          <div className="grid md:grid-cols-2 gap-4 mt-12">
+          <div className="grid md:grid-cols-2 gap-5 mt-12">
             {ecosystem.map((e, i) => (
-              <div key={e.t} className="rounded-2xl border border-border bg-background/50 p-8 hover:border-gold/35 transition-colors">
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <h3 className="font-display text-xl md:text-2xl text-gold">{e.t}</h3>
-                  <span className="text-gold/35 text-sm tabular-nums">0{i + 1}</span>
+              <article
+                key={e.t}
+                className="group relative rounded-[2rem] overflow-hidden border border-border h-[340px] hover:border-gold/40 transition-all duration-500"
+              >
+                <img src={e.img} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/20" />
+                <div className="relative z-10 h-full flex flex-col justify-end p-8">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-gold/60 text-xs tabular-nums">0{i + 1}</span>
+                    <span className="h-px w-8 bg-gold/40" />
+                  </div>
+                  <h3 className="font-display text-2xl md:text-3xl text-gold mb-3">{e.t}</h3>
+                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base max-w-md">{e.d}</p>
                 </div>
-                <p className="text-muted-foreground leading-relaxed text-sm md:text-base">{e.d}</p>
-              </div>
+              </article>
             ))}
           </div>
         </div>
@@ -493,10 +525,10 @@ function Index() {
         </div>
       </section>
 
-      {/* DIGITAL / CONCIERGE */}
+      {/* DIGITAL / CONCIERGE — AI abstract bg */}
       <section id="digital" className="relative py-20 md:py-28 overflow-hidden">
-        <img src={citiesImg} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/92 to-background" />
+        <img src={aiAbstractImg} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/85 to-background" />
         <div className="container-prose relative">
           <SectionLabel align="left">Консьерж</SectionLabel>
           <SectionTitle align="left" className="max-w-3xl">
@@ -507,10 +539,13 @@ function Index() {
           </p>
 
           <div className="grid md:grid-cols-3 gap-4 mt-12">
-            {digital.map((d) => (
+            {digital.map((d, i) => (
               <div key={d.t} className="rounded-2xl border border-border bg-background/70 backdrop-blur-sm p-8">
-                <div className="w-10 h-10 rounded-full border border-gold/50 flex items-center justify-center text-gold mb-5 text-sm">
-                  ◆
+                <div className="flex items-center justify-between mb-5">
+                  <div className="w-10 h-10 rounded-full border border-gold/50 flex items-center justify-center text-gold text-sm">
+                    ◆
+                  </div>
+                  <span className="font-display text-xs text-gold/40 tabular-nums">0{i + 1}</span>
                 </div>
                 <h3 className="font-display text-xl mb-3 text-foreground">{d.t}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{d.d}</p>
