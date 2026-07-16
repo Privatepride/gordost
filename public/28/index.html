@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Инвестиции. Связи. Насмотренность. — 28 июля</title>
+<meta name="description" content="Закрытая встреча для инвесторов. Инвест-аналитика, разбор проектов, самопрезентация и инвест-дейтинг с AI-мэтчингом. Москва + онлайн. 28 июля."/>
+<meta property="og:title" content="Инвестиции. Связи. Насмотренность. — 28 июля"/>
+<meta property="og:description" content="Инвест-аналитика от практиков, живой разбор проектов, мастер-класс по самопрезентации и инвест-дейтинг: 5 встреч с людьми, подобранными под ваши цели."/>
+<meta name="theme-color" content="#0b0d12"/>
+<style>
+:root {
+  --bg:#0b0d12; --bg2:#11141b; --card:rgba(17,20,27,.55);
+  --border:rgba(217,176,140,.12); --border-hover:rgba(217,176,140,.28);
+  --gold:#D9B08C; --gold2:#b8946f; --gold-dim:rgba(217,176,140,.15);
+  --fg:#e4e0db; --muted:#8a8780; --radius:18px; --r-sm:10px;
+  --max:880px; --transition:.3s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--fg);
+  font:400 16px/1.55 system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+::selection{background:rgba(217,176,140,.25)}
+.g{color:var(--gold)} .m{color:var(--muted)}
+.ct{max-width:var(--max);margin:0 auto;padding:0 22px}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,13,18,.82);backdrop-filter:blur(14px)saturate(1.4);
+  border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;
+}
+nav .ct{display:flex;align-items:center;justify-content:space-between;width:100%}
+nav .logo{font-size:1rem;font-weight:800;letter-spacing:.2em;color:var(--gold);text-decoration:none}
+nav .nl{display:flex;gap:4px;align-items:center}
+nav .nl a{
+  font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--muted);text-decoration:none;padding:6px 11px;
+  border:1px solid transparent;border-radius:99px;transition:var(--transition);
+  white-space:nowrap;
+}
+nav .nl a:hover{color:var(--gold);border-color:var(--border-hover)}
+nav .cta{
+  font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;
+  background:var(--gold);color:var(--bg);text-decoration:none;
+  padding:9px 20px;border-radius:99px;transition:var(--transition);
+  white-space:nowrap;margin-left:10px;
+}
+nav .cta:hover{box-shadow:0 0 28px rgba(217,176,140,.35);transform:translateY(-1px)}
+nav .burger{display:none;background:none;border:none;color:var(--gold);cursor:pointer;padding:8px}
+@media(max-width:700px){
+  nav .nl{display:none}
+  nav .burger{display:block}
+}
+
+/* HERO */
+.hero{
+  position:relative;overflow:hidden;
+  min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:100px 22px 60px;
+}
+.hero .glow1{
+  position:absolute;top:-120px;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(217,176,140,.09)0,transparent 70%);
+  pointer-events:none;animation:float 8s ease-in-out infinite;
+}
+.hero .glow2{
+  position:absolute;bottom:-80px;right:-100px;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(217,176,140,.06)0,transparent 70%);
+  pointer-events:none;animation:float 6s ease-in-out 2s infinite reverse;
+}
+@keyframes float{0%,100%{transform:translateX(-50%)translateY(0)}50%{transform:translateX(-50%)translateY(-30px)}}
+.hero .badge{
+  display:inline-block;font-size:9.5px;text-transform:uppercase;
+  letter-spacing:.35em;color:var(--gold);position:relative;
+  padding:6px 20px;border:1px solid var(--gold-dim);border-radius:99px;
+  margin-bottom:32px;z-index:1;
+}
+.hero .badge::before,.hero .badge::after{
+  content:'';position:absolute;top:50%;
+  width:30px;height:1px;background:var(--gold-dim);
+}
+.hero .badge::before{right:100%;margin-right:12px}
+.hero .badge::after{left:100%;margin-left:12px}
+.hero h1{
+  font-size:clamp(2rem,5vw,3rem);line-height:1.1;font-weight:800;
+  letter-spacing:-.01em;max-width:700px;position:relative;z-index:1;
+  background:linear-gradient(135deg,var(--fg)0,var(--gold)100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:18px;
+}
+.hero p.sub{
+  font-size:1rem;color:var(--muted);max-width:580px;position:relative;z-index:1;
+  line-height:1.65;margin-bottom:28px;
+}
+.hero .date{
+  display:flex;align-items:center;gap:14px;margin-bottom:32px;position:relative;z-index:1;
+  font-size:13px;color:var(--gold);letter-spacing:.06em;
+}
+.hero .date::before,.hero .date::after{content:'';width:28px;height:1px;background:var(--gold-dim)}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.16em;font-weight:700;
+  padding:15px 36px;border-radius:99px;text-decoration:none;
+  transition:var(--transition);cursor:pointer;border:none;font-family:inherit;
+  position:relative;z-index:1;
+}
+.btn-gold{background:var(--gold);color:var(--bg)}
+.btn-gold:hover{box-shadow:0 0 36px rgba(217,176,140,.4);transform:translateY(-2px)}
+.btn-gold.pulse{animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,176,140,.35)}50%{box-shadow:0 0 0 16px rgba(217,176,140,0)}}
+.btn-out{border:1px solid var(--border-hover);color:var(--gold);background:transparent}
+.btn-out:hover{border-color:var(--gold);background:var(--gold-dim)}
+
+/* SECTIONS */
+.s{padding:64px 0;position:relative}
+.s-alt{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.sh{font-size:9px;text-transform:uppercase;letter-spacing:.35em;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.sh::after{content:'';flex:1;height:1px;background:var(--border)}
+h2{font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.15;margin-bottom:22px;font-weight:800}
+
+/* PAINS */
+.pains{list-style:none}
+.pains li{padding:15px 0;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-start;font-size:.95rem;line-height:1.55}
+.pains li:last-child{border-bottom:none}
+.pains li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--gold);margin-top:9px;flex-shrink:0}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:32px}
+.tl::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:1px;background:var(--border)}
+.tl-item{position:relative;padding-bottom:24px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item .dot{position:absolute;left:-26px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--gold);z-index:1}
+.tl-item .time{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:4px}
+.tl-item .title{font-weight:700;font-size:.98rem;margin-bottom:3px}
+.tl-item .desc{font-size:.88rem;color:var(--muted);max-width:600px}
+
+/* CARDS */
+.cards{display:grid;gap:14px}
+.cards-2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--card);backdrop-filter:blur(8px);
+  padding:26px;transition:var(--transition);position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
+  opacity:0;transition:var(--transition);
+}
+.card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.card:hover::before{opacity:1}
+.card h3{font-size:1rem;margin-bottom:6px}
+.card .m{font-size:.87rem;line-height:1.55}
+
+/* PRICING CARDS */
+.pricing{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.p-card{
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--card);backdrop-filter:blur(8px);
+  padding:28px 24px;transition:var(--transition);position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.p-card:hover{transform:translateY(-3px)}
+.p-card.featured{border-color:var(--gold-dim);background:rgba(217,176,140,.05)}
+.p-card.featured::after{
+  content:'Рекомендуем';position:absolute;top:14px;right:-28px;
+  background:var(--gold);color:var(--bg);font-size:9px;text-transform:uppercase;
+  letter-spacing:.12em;font-weight:700;padding:5px 36px;transform:rotate(45deg);
+}
+.p-card .p-name{font-size:1.2rem;font-weight:800;margin-bottom:4px}
+.p-card .p-price{font-size:2rem;font-weight:800;color:var(--gold);margin-bottom:18px}
+.p-card .p-price small{font-size:.75rem;font-weight:400;color:var(--muted)}
+.p-card ul{list-style:none;flex:1}
+.p-card ul li{padding:7px 0;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.p-card ul li.yes::before{content:'✓';color:#7eb77f;font-weight:700}
+.p-card ul li.no::before{content:'—';color:rgba(255,255,255,.12)}
+.p-card .btn{margin-top:18px;justify-content:center;width:100%}
+
+/* SPEAKERS */
+.speakers{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.sp{
+  display:flex;gap:16px;padding:22px;border:1px solid var(--border);
+  border-radius:var(--radius);background:var(--card);transition:var(--transition);
+}
+.sp:hover{border-color:var(--border-hover)}
+.sp .av{
+  width:52px;height:52px;border-radius:50%;flex-shrink:0;
+  background:var(--gold-dim);display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1.1rem;color:var(--gold)
+}
+.sp .info h4{font-size:.96rem;margin-bottom:2px}
+.sp .info .m{font-size:.83rem}
+
+/* FAQ ACCORDION */
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:last-child{border-bottom:none}
+.faq-toggle{
+  width:100%;text-align:left;padding:20px 0;background:none;border:none;
+  color:var(--fg);font:inherit;font-weight:700;font-size:.93rem;
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  transition:var(--transition);
+}
+.faq-toggle:hover{color:var(--gold)}
+.faq-toggle::after{content:'+';font-size:1.2rem;transition:var(--transition)}
+.faq-toggle.open::after{transform:rotate(45deg)}
+.faq-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-body.open{max-height:200px}
+.faq-body p{padding:0 0 16px;font-size:.88rem;color:var(--muted)}
+
+/* FORM */
+.frm{border:1px solid var(--gold-dim);border-radius:var(--radius);background:var(--card);padding:32px 28px}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.fg input,.fg select,.fg textarea{
+  width:100%;padding:12px 14px;border-radius:var(--r-sm);
+  border:1px solid var(--border);background:rgba(11,13,18,.5);
+  color:var(--fg);font:.93rem system-ui,sans-serif;transition:var(--transition);
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim)}
+.fg textarea{resize:vertical;min-height:70px}
+.fg select option{background:var(--bg);color:var(--fg)}
+.fg.chk{display:flex;align-items:flex-start;gap:10px}
+.fg.chk input{width:auto;margin-top:3px;accent-color:var(--gold)}
+.fg.chk label{text-transform:none;letter-spacing:0;font-size:.83rem;cursor:pointer}
+.fm{display:none;padding:14px 18px;border-radius:var(--r-sm);font-size:.88rem;margin-top:14px}
+.fm.ok{display:block;background:rgba(126,183,127,.1);color:#7eb77f;border:1px solid rgba(126,183,127,.2)}
+.fm.err{display:block;background:rgba(231,76,60,.1);color:#e74c3c;border:1px solid rgba(231,76,60,.2)}
+
+/* SVG ILLUSTRATIONS */
+.ill{max-width:320px;margin:0 auto;opacity:.35;position:absolute;pointer-events:none}
+@media(max-width:700px){.ill{opacity:.18}}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:36px 0;text-align:center;font-size:.8rem;color:var(--muted)}
+footer p{margin-bottom:4px}
+
+/* MOBILE MENU */
+.mob-menu{display:none;position:fixed;top:58px;left:0;right:0;bottom:0;z-index:99;
+  background:rgba(11,13,18,.98);backdrop-filter:blur(20px);
+  flex-direction:column;padding:24px;gap:12px}
+.mob-menu.open{display:flex}
+.mob-menu a{font-size:.95rem;color:var(--fg);text-decoration:none;padding:12px 0;border-bottom:1px solid var(--border)}
+.mob-menu a:hover{color:var(--gold)}
+
+@media(max-width:500px){
+  .p-card .p-price{font-size:1.5rem}
+  .frm{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="ct">
+    <a href="/" class="logo">ГОРДОСТЬ</a>
+    <div class="nl">
+      <a href="#pains">Боли</a><a href="#prog">Программа</a><a href="#dating">Дейтинг</a>
+      <a href="#pricing">Тарифы</a><a href="#speakers">Спикеры</a><a href="#faq">FAQ</a>
+    </div>
+    <a href="#form" class="cta">Регистрация</a>
+    <button class="burger" id="burger" aria-label="Меню" onclick="document.getElementById('mob').classList.toggle('open')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16" stroke-linecap="round"/><path d="M4 17h16" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="mob-menu" id="mob">
+  <a href="#pains" onclick="document.getElementById('mob').classList.remove('open')">Боли</a>
+  <a href="#prog" onclick="document.getElementById('mob').classList.remove('open')">Программа</a>
+  <a href="#dating" onclick="document.getElementById('mob').classList.remove('open')">Дейтинг</a>
+  <a href="#pricing" onclick="document.getElementById('mob').classList.remove('open')">Тарифы</a>
+  <a href="#speakers" onclick="document.getElementById('mob').classList.remove('open')">Спикеры</a>
+  <a href="#faq" onclick="document.getElementById('mob').classList.remove('open')">FAQ</a>
+  <a href="#form" onclick="document.getElementById('mob').classList.remove('open')" style="color:var(--gold)">Регистрация</a>
+</div>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="glow1"></div><div class="glow2"></div>
+  <svg class="ill" style="top:8%;right:5%;width:360px;height:360px" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="none" stroke="rgba(217,176,140,.08)" stroke-width=".5"/><circle cx="100" cy="100" r="55" fill="none" stroke="rgba(217,176,140,.1)" stroke-width="1"/><circle cx="100" cy="100" r="30" fill="none" stroke="rgba(217,176,140,.15)" stroke-width="1.5"/><circle cx="100" cy="100" r="8" fill="rgba(217,176,140,.25)"/></svg>
+  <div class="badge">ДЛЯ ИНВЕСТОРОВ</div>
+  <h1>Инвестиции. Связи. Насмотренность.</h1>
+  <p class="sub">Закрытая встреча: инвест-аналитика от практиков, живой разбор проектов, мастер-класс по самопрезентации и инвест-дейтинг — 5 встреч с людьми, подобранными под ваши цели.</p>
+  <div class="date">28 июля · Москва + онлайн · старт в 17:00</div>
+  <a href="#form" class="btn btn-gold pulse">Зарегистрироваться →</a>
+</div>
+
+<!-- PAINS -->
+<div class="s" id="pains"><div class="ct reveal">
+  <div class="sh">Вам это знакомо?</div>
+  <ul class="pains">
+    <li>Деньги есть — жизни нет. Зарабатываете, а драйва не чувствуете</li>
+    <li>Портфель собран стихийно: крипта, золото, недвижка, стартапы. Работает ли — непонятно</li>
+    <li>На нетворкингах 9 из 10 пытаются что-то вам продать. Ищут не партнёра — кошелёк</li>
+    <li>Не с кем поговорить на одном языке. Окружение не про инвестиции</li>
+    <li>Хочется сохранить капитал. Ну и приумножить на текущем нестабильном рынке</li>
+    <li>Не умеете презентовать себя и выстраивать стратегические связи. Теряете возможности</li>
+    <li>Везде одно и то же. Скучно. Хочется новых впечатлений, людей, красок жизни</li>
+  </ul>
+</div></div>
+
+<!-- PROGRAM -->
+<div class="s s-alt" id="prog"><div class="ct reveal">
+  <div class="sh">Программа</div>
+  <div class="tl">
+    <div class="tl-item"><div class="dot"></div><div class="time">17:00 · Открытие</div><div class="title">Андрей Плахотнюк</div><div class="desc">Рынок штормит — куда смотреть. Почему одиночное плавание проигрывает сообществу.</div></div>
+    <div class="tl-item"><div class="dot"></div><div class="time">17:10 · Инвестиционная аналитика</div><div class="title">Дмитрий Махначев</div><div class="desc">Что покупать во втором полугодии. Защитные инструменты. Новые инструменты, о которых вы не знали.</div></div>
+    <div class="tl-item"><div class="dot"></div><div class="time">17:50 · Интерактив «Разбор проектов»</div><div class="title">Андрей Плахотнюк</div><div class="desc">Разбираем известные проекты инкогнито вместе с вами. Тренируете чутьё на сделку. Можно ошибаться.</div></div>
+    <div class="tl-item"><div class="dot"></div><div class="time">18:30 · Кофе-брейк</div><div class="desc">Те, кого вы встретите на дейтинге, сначала увидят вас здесь.</div></div>
+    <div class="tl-item"><div class="dot"></div><div class="time">18:40 · Самопрезентация и стратегический нетворкинг</div><div class="desc">Потерянные возможности — потерянные деньги. Улучшаем самопрезентацию и применяем на практике.</div></div>
+    <div class="tl-item"><div class="dot"></div><div class="time">19:40 · Инвест-дейтинг «Умные связи»</div><div class="desc">5 встреч под ваши цели. Сопроводительная карточка. Контакты сохранятся на платформе.</div></div>
+    <div class="tl-item"><div class="dot"></div><div class="time">21:00 · Закрытие</div></div>
+  </div>
+</div></div>
+
+<!-- DATING -->
+<div class="s" id="dating"><div class="ct reveal">
+  <div class="sh">Инвест-дейтинг</div>
+  <h2>AI-мэтчинг «Умные связи»</h2>
+  <p class="m" style="max-width:600px;margin-bottom:28px">Алгоритм клуба «Гордость» анализирует вашу анкету и анкеты других участников: цели, интересы, запросы, ресурсы, опыт. Создаёт 5 пар для вас.</p>
+  <svg style="width:100%;max-width:500px;margin:0 auto 28px;display:block" viewBox="0 0 300 140"><ellipse cx="80" cy="50" rx="45" ry="20" fill="none" stroke="rgba(217,176,140,.2)" stroke-width="1"/><ellipse cx="220" cy="50" rx="45" ry="20" fill="none" stroke="rgba(217,176,140,.2)" stroke-width="1"/><circle cx="80" cy="50" r="4" fill="rgba(217,176,140,.5)"/><circle cx="90" cy="42" r="3" fill="rgba(217,176,140,.35)"/><circle cx="70" cy="55" r="3" fill="rgba(217,176,140,.35)"/><circle cx="85" cy="58" r="3" fill="rgba(217,176,140,.35)"/><circle cx="220" cy="50" r="4" fill="rgba(217,176,140,.5)"/><circle cx="210" cy="42" r="3" fill="rgba(217,176,140,.35)"/><circle cx="230" cy="55" r="3" fill="rgba(217,176,140,.35)"/><line x1="125" y1="50" x2="175" y2="50" stroke="rgba(217,176,140,.3)" stroke-width=".8" stroke-dasharray="4 3"/><circle cx="150" cy="50" r="5" fill="none" stroke="rgba(217,176,140,.5)" stroke-width="1"/><text x="150" y="80" text-anchor="middle" fill="rgba(217,176,140,.6)" font-size="9" font-family="system-ui">AI-мэтчинг</text><ellipse cx="150" cy="50" rx="70" ry="8" fill="none" stroke="rgba(217,176,140,.1)" stroke-width=".5" stroke-dasharray="2 4"/><circle cx="55" cy="35" r="2" fill="rgba(217,176,140,.2)"/><circle cx="245" cy="35" r="2" fill="rgba(217,176,140,.2)"/></svg>
+  <div class="cards cards-2">
+    <div class="card"><h3 class="g">1. Анкета</h3><p class="m">Заполняете за 3-5 дней. Цели, сферы, что ищете, что предлагаете.</p></div>
+    <div class="card"><h3 class="g">2. Мэтчинг</h3><p class="m">AI строит матрицу совместимости. 5 пар. Ни одного случайного.</p></div>
+    <div class="card"><h3 class="g">3. Карточка</h3><p class="m">Досье на каждую встречу: анкета, точки соприкосновения, подсказки.</p></div>
+    <div class="card"><h3 class="g">4. Встреча</h3><p class="m">10 минут с конкретным планом. Офлайн за столами или в Zoom.</p></div>
+    <div class="card"><h3 class="g">5. Мэтч</h3><p class="m">Взаимный интерес — контакт сохраняется на платформе.</p></div>
+  </div>
+</div></div>
+
+<!-- HOW TO JOIN -->
+<div class="s s-alt"><div class="ct reveal">
+  <div class="sh">Как попасть</div>
+  <p class="m" style="max-width:560px">Строгий отбор участников. Заполняете анкету — если всё ок, пришлём билет. Если останутся вопросы — свяжемся. Если нам не по пути — к сожалению, будет отказано.</p>
+</div></div>
+
+<!-- PRICING -->
+<div class="s" id="pricing"><div class="ct reveal">
+  <div class="sh">Тарифы</div>
+  <div class="pricing">
+    <div class="p-card">
+      <div class="p-name">Базовый</div>
+      <div class="p-price">2 500 <small>₽</small></div>
+      <ul>
+        <li class="yes">Живое участие в Москве</li>
+        <li class="yes">Инвест-аналитика</li>
+        <li class="yes">Разбор проектов</li>
+        <li class="yes">Мастер-класс по самопрезентации</li>
+        <li class="yes">Кофе-брейк и нетворкинг</li>
+        <li class="no">AI-мэтчинг</li>
+        <li class="no">Закрытый чат</li>
+      </ul>
+      <a href="#form" class="btn btn-out">Выбрать</a>
+    </div>
+    <div class="p-card featured">
+      <div class="p-name">Онлайн</div>
+      <div class="p-price">3 500 <small>₽</small></div>
+      <ul>
+        <li class="yes">Онлайн-трансляция и запись</li>
+        <li class="yes">Инвест-аналитика</li>
+        <li class="yes">Разбор проектов</li>
+        <li class="yes">Мастер-класс</li>
+        <li class="yes">AI-мэтчинг: 5 пар</li>
+        <li class="yes">Zoom-комнаты для дейтинга</li>
+        <li class="yes">Закрытый чат участников</li>
+        <li class="yes">Карточки с точками соприкосновения</li>
+        <li class="yes">Пост-мэтчинг в боте</li>
+      </ul>
+      <a href="#form" class="btn btn-gold">Выбрать</a>
+    </div>
+    <div class="p-card">
+      <div class="p-name">VIP</div>
+      <div class="p-price">5 500 <small>₽</small></div>
+      <ul>
+        <li class="yes">Всё из Базового</li>
+        <li class="yes">Живой дейтинг за столами</li>
+        <li class="yes">Карточки-досье на каждую встречу</li>
+        <li class="yes">Запись мероприятия</li>
+        <li class="yes">AI-мэтчинг + пост-мэтчинг</li>
+        <li class="yes">Закрытый чат на 30 дней</li>
+        <li class="yes">Карта инвестора (все профили)</li>
+        <li class="yes">Персональный конверт с материалами</li>
+      </ul>
+      <a href="#form" class="btn btn-gold">Выбрать</a>
+    </div>
+  </div>
+</div></div>
+
+<!-- WHY -->
+<div class="s s-alt"><div class="ct reveal">
+  <div class="sh">Почему это не очередной нетворкинг</div>
+  <ul class="pains">
+    <li>Не будет охотников за вашим капиталом — фильтр на входе</li>
+    <li>Не будет скучно — каждый блок интерактивный</li>
+    <li>Не будет «ещё одной конференции» — вы участник, а не зритель</li>
+    <li>Не будет случайных людей — AI-мэтчинг подбирает только тех, кто совпадает</li>
+  </ul>
+</div></div>
+
+<!-- SPEAKERS -->
+<div class="s" id="speakers"><div class="ct reveal">
+  <div class="sh">Спикеры</div>
+  <div class="speakers">
+    <div class="sp"><div class="av">АП</div><div class="info"><h4>Андрей Плахотнюк</h4><p class="m">Основатель инвестклуба «Гордость» и синдиката ИнвестБаня. 15 лет в финансах. 6 000+ проектов. 5+ млрд ₽.</p></div></div>
+    <div class="sp"><div class="av">ДМ</div><div class="info"><h4>Дмитрий Махначев</h4><p class="m">Инвестор, аналитик. Фондовый рынок, защитные инструменты, портфельные стратегии.</p></div></div>
+    <div class="sp"><div class="av">ДМ</div><div class="info"><h4>Дарья Меркурьева</h4><p class="m">CEO «Гордость». Стратегия, продукт, AI-инструменты сообщества.</p></div></div>
+    <div class="sp"><div class="av">🎤</div><div class="info"><h4>Секретный спикер</h4><p class="m">Нетворкинг, коммуникации, конфликты, самопрезентация.</p></div></div>
+  </div>
+</div></div>
+
+<!-- FAQ -->
+<div class="s s-alt" id="faq"><div class="ct reveal">
+  <div class="sh">FAQ</div>
+  <div class="faq-item"><button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">Где? Во сколько?</button><div class="faq-body"><p>Москва, Арбат, 42. Начало в 17:00.</p></div></div>
+  <div class="faq-item"><button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">Кто ведёт разбор проектов?</button><div class="faq-body"><p>Андрей Плахотнюк. 15 лет опыта, 6 000+ проектов за плечами.</p></div></div>
+  <div class="faq-item"><button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">Как работает AI-мэтчинг?</button><div class="faq-body"><p>Анкета → анализ целей и интересов → матрица совместимости → 5 пар → карточки с подсказками.</p></div></div>
+  <div class="faq-item"><button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">Дейтинг только для VIP?</button><div class="faq-body"><p>VIP — встречи за столами. Онлайн — в Zoom. Базовый — без дейтинга.</p></div></div>
+  <div class="faq-item"><button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">Сколько человек?</button><div class="faq-body"><p>40 офлайн билетов и 30 онлайн. Места ограничены.</p></div></div>
+  <div class="faq-item"><button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">Запись будет?</button><div class="faq-body"><p>Запись доступна для тарифов VIP и Онлайн.</p></div></div>
+</div></div>
+
+<!-- FORM -->
+<div class="s" id="form"><div class="ct reveal">
+  <div class="sh">Регистрация</div>
+  <h2>Осталось <span class="g" id="spots">мало</span> мест</h2>
+  <p class="m" style="margin-bottom:20px">28 июля в 21:00 вы уйдёте с качественно новым окружением и стратегическими партнёрствами.</p>
+  <div class="frm">
+    <form id="rf">
+      <div class="fg"><label>Имя и фамилия *</label><input type="text" name="name" required placeholder="Иван Иванов"></div>
+      <div class="fg"><label>Telegram (username или номер) *</label><input type="text" name="telegram" required placeholder="@username"></div>
+      <div class="fg"><label>Email</label><input type="email" name="email" placeholder="mail@example.com"></div>
+      <div class="fg"><label>Сфера деятельности</label><input type="text" name="industry" placeholder="Предприниматель, топ-менеджер, инвестор..."></div>
+      <div class="fg"><label>Капитал (диапазон) *</label><select name="capital" required>
+        <option value="">Выберите...</option>
+        <option value="0-10">до 10 млн ₽</option>
+        <option value="10-50">10–50 млн ₽</option>
+        <option value="50-100">50–100 млн ₽</option>
+        <option value="100-300">100–300 млн ₽</option>
+        <option value="300+">300+ млн ₽</option>
+      </select></div>
+      <div class="fg"><label>Тариф</label><select name="tariff">
+        <option value="base">Базовый — 2 500 ₽</option>
+        <option value="online">Онлайн — 3 500 ₽</option>
+        <option value="vip">VIP — 5 500 ₽</option>
+      </select></div>
+      <div class="fg"><label>Что вы ищете?</label><textarea name="goal" placeholder="Партнёров, экспертизу, проекты, окружение..."></textarea></div>
+      <div class="fg chk"><input type="checkbox" name="consent" required id="consent"><label for="consent">Согласен на обработку данных и получение сообщений</label></div>
+      <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center">Отправить заявку →</button>
+    </form>
+    <div class="fm" id="fm"></div>
+  </div>
+</div></div>
+
+<footer><div class="ct">
+  <p>ГОРДОСТЬ — Инвестиционный клуб для тех, кто приумножает капитал через силу сообщества.</p>
+  <p>© 2026 Гордость. ИП Плахотнюк Андрей Витальевич.</p>
+</div></footer>
+
+<script>
+(function(){
+  // Scroll reveal
+  var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+
+  // Form
+  var f=document.getElementById('rf'), fm=document.getElementById('fm');
+  f.addEventListener('submit',function(e){
+    e.preventDefault();var b=f.querySelector('button');b.disabled=true;b.textContent='Отправляем...';
+    var d={name:f.name.value.trim(),telegram:f.telegram.value.trim(),email:f.email.value.trim(),
+      industry:f.industry.value.trim(),capital:f.capital.value,tariff:f.tariff.value,goal:f.goal.value.trim()};
+    fetch('/api/v1/event-28/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})
+    .then(function(r){if(!r.ok)return r.json().then(function(e){throw new Error(e.message||'Ошибка')});return r.json()})
+    .then(function(){fm.className='fm ok';fm.textContent='Заявка отправлена. Мы свяжемся с вами.';f.reset()})
+    .catch(function(err){fm.className='fm err';fm.textContent=err.message||'Ошибка. Напишите в @gordost_club_bot'})
+    .finally(function(){b.disabled=false;b.textContent='Отправить заявку →'});
+  });
+})();
+</script>
+</body>
+</html>
