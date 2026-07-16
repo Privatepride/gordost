@@ -7,16 +7,16 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Страница не найдена</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          Возможно, страница была перемещена или вы перешли по устаревшей ссылке.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            На главную
           </Link>
         </div>
       </div>
@@ -28,19 +28,30 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Pride: The Investor's Circle is a private club for investors with significant capital, fostering collaboration and growth." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Pride: The Investor's Circle is a private club for investors with significant capital, fostering collaboration and growth." },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { name: "theme-color", content: "#121721" },
+      { title: "ГОРДОСТЬ — Закрытый инвестиционный клуб" },
+      {
+        name: "description",
+        content:
+          "Закрытое сообщество инвесторов с капиталом от 50 млн ₽. Правильные люди в правильном месте.",
+      },
+      { name: "author", content: "Инвестиционный клуб «Гордость»" },
+      { property: "og:title", content: "ГОРДОСТЬ — Инвестиционный клуб" },
+      {
+        property: "og:description",
+        content:
+          "Закрытое сообщество инвесторов с капиталом от 50 млн ₽. Правильные люди в правильном месте.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Pride: The Investor's Circle is a private club for investors with significant capital, fostering collaboration and growth." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/21ee95e6-a99f-48fa-96ae-329693fd4342/id-preview-2f0039de--32ec0ae8-cd77-4f52-b371-e138818c6530.lovable.app-1777845489301.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/21ee95e6-a99f-48fa-96ae-329693fd4342/id-preview-2f0039de--32ec0ae8-cd77-4f52-b371-e138818c6530.lovable.app-1777845489301.png" },
+      { property: "og:locale", content: "ru_RU" },
+      { property: "og:site_name", content: "ГОРДОСТЬ" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "ГОРДОСТЬ — Инвестиционный клуб" },
+      {
+        name: "twitter:description",
+        content: "Закрытое сообщество инвесторов с капиталом от 50 млн ₽.",
+      },
     ],
     links: [
       {
@@ -56,7 +67,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <head>
         <HeadContent />
       </head>
