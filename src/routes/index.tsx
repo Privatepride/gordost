@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import heroImg from "@/assets/hero.jpg";
-import founderImg from "@/assets/founder.png";
+import founderImg from "@/assets/founder-new.jpg";
 import citiesImg from "@/assets/cities.jpg";
 import boardroomImg from "@/assets/boardroom.jpg";
 import lifestyleImg from "@/assets/lifestyle.jpg";
@@ -11,6 +12,7 @@ import mentorshipImg from "@/assets/mentorship.jpg";
 import { Nav } from "@/components/site/Nav";
 import { SectionLabel, SectionTitle } from "@/components/site/SectionTitle";
 import { JoinCTA } from "@/components/site/JoinCTA";
+import { ApplyModal } from "@/components/site/ApplyModal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -33,6 +35,13 @@ const aboutBullets = [
   { t: "Окружение, которое тянет вверх", d: "Люди вашего масштаба, которые радуются вашим победам." },
   { t: "1 + 1 = 11", d: "Крупные сделки, которые недоступны в одиночку, открываются для вас в клубе." },
   { t: "Яркость жизни", d: "ИнвестБаня, путешествия, закрытые ужины с визионерами и форум-группы — место, где можно быть собой." },
+];
+
+const heroMetrics = [
+  { v: "1 200+", l: "Резидентов сообщества" },
+  { v: "5+ млрд ₽", l: "Привлеченного капитала" },
+  { v: "136", l: "Параметров AI-скоринга" },
+  { v: "100%", l: "Фокус на доверии и репутации" },
 ];
 
 const howItWorks = [
@@ -165,22 +174,20 @@ function ToolsStrip() {
           <div className="h-px w-full bg-gradient-to-r from-gold/40 to-transparent" />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+        <div className="flex flex-wrap gap-2.5 md:gap-3">
           {toolBadges.map((label) => (
             <div
               key={label}
-              className="group cursor-default p-6 bg-card/40 border border-border rounded-2xl hover:bg-gradient-to-br hover:from-card hover:to-secondary hover:border-gold/40 transition-all duration-500"
+              className="group cursor-default inline-flex items-center gap-2.5 md:gap-3 px-3.5 md:px-4 py-2.5 md:py-3 rounded-full neon-card"
             >
-              <div className="flex flex-col gap-4">
-                <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-gold/10 text-gold">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                    {toolIcons[label] ?? toolIcons["ФОРУМ-ГРУППЫ"]}
-                  </svg>
-                </div>
-                <span className="uppercase text-[10px] font-semibold tracking-[0.22em] text-foreground/90 group-hover:text-gold transition-colors">
-                  {label}
-                </span>
+              <div className="w-6 h-6 md:w-7 md:h-7 shrink-0 flex items-center justify-center rounded-md bg-gold/10 text-gold">
+                <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                  {toolIcons[label] ?? toolIcons["ФОРУМ-ГРУППЫ"]}
+                </svg>
               </div>
+              <span className="uppercase text-[9px] md:text-[10px] font-semibold tracking-[0.18em] text-foreground/90 group-hover:text-gold transition-colors whitespace-nowrap">
+                {label}
+              </span>
             </div>
           ))}
         </div>
@@ -195,150 +202,119 @@ function VisualBand({
   eyebrow,
   title,
   height = "h-[420px] md:h-[520px]",
+  contained = false,
 }: {
   image: string;
-  eyebrow: string;
+  eyebrow?: string;
   title: React.ReactNode;
   height?: string;
+  contained?: boolean;
 }) {
-  return (
-    <section className={`relative ${height} overflow-hidden border-y border-gold/15`}>
+  const content = (
+    <>
       <img src={image} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-background/30" />
       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-background/50" />
       <div className="container-prose relative z-10 h-full flex flex-col justify-center">
-        <div className="max-w-2xl">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="h-px w-12 bg-gold" />
-            <span className="text-[10px] uppercase tracking-[0.4em] text-gold font-semibold">{eyebrow}</span>
-          </div>
-          <h2 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.02]">{title}</h2>
+        <div className={`${contained ? "max-w-3xl" : "max-w-2xl"}`}>
+          {eyebrow && (
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-px w-12 bg-gold" />
+              <span className="text-[10px] uppercase tracking-[0.4em] text-gold font-semibold">{eyebrow}</span>
+            </div>
+          )}
+          <h2 className={contained ? "font-display text-4xl md:text-5xl leading-[1.04]" : "font-display text-4xl md:text-6xl lg:text-7xl leading-[1.02]"}>
+            {title}
+          </h2>
         </div>
       </div>
+    </>
+  );
+
+  if (contained) {
+    return (
+      <section className="py-12 md:py-16">
+        <div className="container-prose">
+          <div className={`relative ${height} overflow-hidden rounded-[2rem] border border-gold/20`}>
+            {content}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className={`relative ${height} overflow-hidden border-y border-gold/15`}>
+      {content}
     </section>
   );
 }
 
 function Index() {
+  const [joinOpen, setJoinOpen] = useState(false);
   return (
     <div id="top" className="min-h-screen text-foreground relative z-[1]">
       <Nav />
+      <ApplyModal open={joinOpen} onClose={() => setJoinOpen(false)} />
 
-      {/* HERO — Elite mosaic with premium imagery */}
-      <section className="relative overflow-hidden pt-32 md:pt-40 pb-16 md:pb-24">
+      {/* HERO — premium tech direction */}
+      <section className="relative overflow-hidden pt-32 md:pt-40 pb-16 md:pb-24 tech-grid">
+        <img src={heroImg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/75 to-background" />
         <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] rounded-full bg-gold/[0.06] blur-[120px] pointer-events-none" />
         <div className="absolute top-1/3 -left-32 w-[28rem] h-[28rem] rounded-full bg-gold/[0.04] blur-[100px] pointer-events-none" />
 
         <div className="container-prose relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* LEFT — Copy */}
-            <div className="relative z-10">
-              <div className="mb-8 flex items-center gap-4">
-                <span className="h-px w-16 bg-gradient-to-r from-gold to-transparent" />
-                <span className="uppercase tracking-[0.4em] text-[10px] font-semibold text-gold">
-                  Private Investment Community
-                </span>
-              </div>
-
-              <h1 className="font-display text-7xl sm:text-8xl md:text-9xl leading-[0.95] mb-8 gold-gradient">
-                ГОРДОСТЬ
-              </h1>
-
-              <div className="space-y-2 mb-8">
-                <p className="text-xl md:text-2xl font-light tracking-tight text-foreground/95">
-                  Инвестиционный клуб
-                </p>
-                <p className="text-base md:text-lg italic text-gold/85">
-                  для инвесторов с капиталом от 50 млн
-                </p>
-              </div>
-
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg mb-10">
-                Для тех, кто приумножает капитал через силу сообщества.
-              </p>
-
-              <a
-                href="#join"
-                className="group relative inline-flex items-center gap-2 overflow-hidden bg-gold px-12 py-5 text-primary-foreground text-[11px] uppercase tracking-[0.2em] font-semibold transition-all duration-500 hover:shadow-[0_0_40px_rgba(221,201,169,0.3)]"
-              >
-                <span className="relative z-10">Стать резидентом</span>
-                <span aria-hidden className="relative z-10">→</span>
-              </a>
+          <div className="max-w-5xl">
+            <div className="mb-8 flex items-center gap-4">
+              <span className="h-px w-16 bg-gradient-to-r from-gold to-transparent" />
+              <span className="uppercase tracking-[0.4em] text-[10px] font-semibold text-gold">
+                ДЛЯ ИНВЕСТОРОВ С КАПИТАЛОМ ОТ 50 МЛН Р
+              </span>
             </div>
 
-            {/* RIGHT — Mosaic with premium imagery */}
-            <div className="relative w-full h-[480px] md:h-[600px]">
-              <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 gap-3 md:gap-4">
-                <div className="col-span-7 row-span-8 rounded-[2rem] overflow-hidden border border-gold/20 shadow-2xl z-20">
-                  <img src={boardroomImg} alt="Закрытый клуб" className="w-full h-full object-cover" />
-                </div>
+            <h1 className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-[0.95] mb-8">
+              <span className="block text-foreground/95">ГОРДОСТЬ</span>
+              <span className="block text-gold mt-2 text-[clamp(1.25rem,5.5vw,4.5rem)] leading-[1.1]">ИНВЕСТИЦИОННЫЙ КЛУБ</span>
+            </h1>
 
-                <div className="col-span-5 row-span-4 rounded-[2rem] p-6 md:p-8 flex flex-col justify-end translate-y-4 shadow-xl z-30 bg-gold">
-                  <span className="font-display text-4xl md:text-5xl text-primary-foreground">2</span>
-                  <span className="text-[10px] uppercase font-semibold text-primary-foreground/70 tracking-[0.2em] mt-2">
-                    Города клуба
-                  </span>
-                </div>
+            <p className="text-base md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-10">
+              Для тех, кто приумножает капитал через силу сообщества.
+            </p>
 
-                <div className="col-start-8 col-span-5 row-start-5 row-span-4 rounded-[2rem] overflow-hidden border border-border opacity-70 hover:opacity-100 transition-opacity duration-700">
-                  <img src={architectureImg} alt="" className="w-full h-full object-cover" />
-                </div>
-
-                <div className="col-start-3 col-span-6 row-start-9 row-span-4 rounded-[2rem] p-6 md:p-8 flex flex-col justify-center z-40 glass">
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-display text-3xl md:text-4xl gold-gradient">от 50</span>
-                    <span className="font-display text-lg md:text-xl text-gold">млн ₽</span>
-                  </div>
-                  <span className="text-[10px] uppercase font-medium text-muted-foreground tracking-[0.2em] mt-2">
-                    Минимальный капитал
-                  </span>
-                </div>
-
-                <div className="col-start-9 col-span-4 row-start-9 row-span-3 rounded-[2rem] overflow-hidden border border-border">
-                  <img src={lifestyleImg} alt="" className="w-full h-full object-cover" />
-                </div>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={() => setJoinOpen(true)}
+              className="group relative inline-flex items-center gap-2 overflow-hidden bg-gold px-12 py-5 text-primary-foreground text-[11px] uppercase tracking-[0.2em] font-semibold transition-all duration-500 hover:shadow-[0_0_40px_rgba(221,201,169,0.3)]"
+            >
+              <span className="relative z-10">Стать резидентом</span>
+              <span aria-hidden className="relative z-10">→</span>
+            </button>
           </div>
+
         </div>
       </section>
 
       <ToolsStrip />
 
-      {/* Visual band — Manifesto */}
-      <VisualBand
-        image={dinnerImg}
-        eyebrow="Манифест"
-        title={<>Правильные люди <span className="gold-gradient">в правильном месте</span></>}
-      />
+      <section id="focus" className="py-14 md:py-18">
+        <div className="container-prose">
+          <h2 className="font-display text-4xl md:text-6xl leading-[1.05] max-w-4xl">
+            Место, где сильные <span className="gold-gradient">делают сделки с сильными</span>
+          </h2>
+        </div>
+      </section>
 
       {/* ABOUT */}
-      <section id="about" className="py-20 md:py-28">
+      <section id="about" className="pt-6 md:pt-8 pb-20 md:pb-28">
         <div className="container-prose">
           <div className="grid lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-7">
-              <SectionLabel align="left">О клубе</SectionLabel>
-              <SectionTitle align="left" className="max-w-4xl">
-                Место, где сильные <span className="gold-gradient">делают сделки с сильными</span>
-              </SectionTitle>
-
-              <p className="max-w-2xl mt-8 text-lg text-muted-foreground leading-relaxed">
+            <div className="lg:col-span-12">
+              <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed">
                 <span className="text-foreground/95 font-medium">«Гордость»</span> — это пространство возможностей,
                 вдохновляющее на рост и развитие. Среда, в которой ваш капитал начинает расти иначе — через людей,
                 доверие и коллективную экспертизу.
               </p>
-            </div>
-
-            <div className="lg:col-span-5 relative">
-              <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-gold/20">
-                <img src={mentorshipImg} alt="" loading="lazy" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-              </div>
-              <div className="absolute -bottom-6 -left-6 glass rounded-2xl p-5 max-w-[220px]">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-gold mb-2">Резиденты</p>
-                <p className="font-display text-3xl gold-gradient">1 200+</p>
-                <p className="text-xs text-muted-foreground mt-1">в сообществе основателя</p>
-              </div>
             </div>
           </div>
 
@@ -374,15 +350,17 @@ function Index() {
       <section id="how" className="relative py-20 md:py-28 bg-card/35 border-y border-border">
         <div className="container-prose">
           <SectionLabel align="left">Как это работает</SectionLabel>
-          <SectionTitle align="left" className="max-w-4xl">
-            Шесть направлений, <span className="gold-gradient">которые работают на ваш капитал</span>
-          </SectionTitle>
+          <h2 className="font-display text-4xl md:text-6xl leading-[1.08] tracking-wide uppercase max-w-5xl">
+            Уникальная комбинация
+            <br />
+            <span className="gold-gradient">возможностей клуба</span>
+          </h2>
 
           <div className="grid md:grid-cols-2 gap-5 mt-14">
             {howItWorks.map((b) => (
               <article
                 key={b.n}
-                className="group relative rounded-[2rem] overflow-hidden border border-border bg-background/60 hover:border-gold/35 transition-all duration-500"
+                className="group relative rounded-[2rem] overflow-hidden neon-card"
               >
                 <div className="relative h-56 overflow-hidden">
                   <img
@@ -474,53 +452,107 @@ function Index() {
 
       <JoinCTA
         variant="banner"
+        onOpenJoin={() => setJoinOpen(true)}
         eyebrow="Календарь резидента"
         title="Доступ к закрытым событиям и форматам клуба"
         cta="Стать резидентом"
       />
 
       {/* FOUNDER */}
-      <section className="py-20 md:py-28 border-t border-border">
-        <div className="container-prose grid lg:grid-cols-5 gap-12 items-center">
-          <div className="lg:col-span-2">
-            <div
-              className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-gold/25"
-              style={{ background: "linear-gradient(160deg, #1A2030 0%, #0D1119 100%)" }}
-            >
+      <section id="forum" className="py-20 md:py-28 border-t border-border">
+        <div className="container-prose">
+          {/* Photo + Name row */}
+          <div className="flex flex-col md:flex-row gap-8 md:gap-14 items-center md:items-end mb-16 md:mb-20">
+            <div className="w-48 md:w-56 shrink-0">
               <div
-                className="absolute inset-0 opacity-30"
-                style={{ background: "radial-gradient(circle at 70% 40%, rgba(221,201,169,0.25), transparent 60%)" }}
-              />
-              <img
-                src={founderImg}
-                alt="Андрей Плахотнюк"
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-contain object-bottom"
-              />
+                className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-gold/25"
+                style={{ background: "linear-gradient(160deg, #1A2030 0%, #0D1119 100%)" }}
+              >
+                <div
+                  className="absolute inset-0 opacity-30"
+                  style={{ background: "radial-gradient(circle at 70% 40%, rgba(221,201,169,0.25), transparent 60%)" }}
+                />
+                <img
+                  src={founderImg}
+                  alt="Андрей Плахотнюк"
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-contain object-bottom"
+                />
+              </div>
+            </div>
+            <div className="text-center md:text-left">
+              <SectionLabel align="center" className="md:[&]:text-left">Основатель</SectionLabel>
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mt-3">
+                Андрей <span className="gold-gradient">Плахотнюк</span>
+              </h2>
+              <p className="text-muted-foreground text-base md:text-lg leading-relaxed mt-4 max-w-xl">
+                Экономист и банкир. 15 лет в финансах: банки, страхование, инвестиции. Основатель клуба «Гордость» и
+                сообщества «ИнвестБаня».
+              </p>
             </div>
           </div>
-          <div className="lg:col-span-3">
-            <SectionLabel align="left">Основатель</SectionLabel>
-            <h2 className="font-display text-3xl md:text-5xl mb-6 text-left">
-              Андрей <span className="gold-gradient">Плахотнюк</span>
-            </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed mb-10">
-              За его плечами более ₽5 млрд привлечённого финансирования, 6000+ рассмотренных проектов и два экономических
-              образования. В инвестициях с 2018 года, а уже в 2019 Андрей создал «ИнвестБаню» — сообщество, которое
-              объединило 1200+ резидентов.
-            </p>
-            <div className="grid grid-cols-3 gap-4 border-t border-border pt-8">
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 md:mb-20">
+            {[
+              { v: "6 000+", l: "проектов рассмотрено" },
+              { v: "5+ млрд ₽", l: "привлечённый капитал" },
+              { v: "1 200+", l: "резидентов «ИнвестБани»" },
+              { v: "2018", l: "в инвестициях с" },
+            ].map((s) => (
+              <div key={s.l} className="rounded-xl border border-border bg-card/30 p-5 md:p-6 text-center">
+                <div className="font-display text-xl md:text-2xl lg:text-3xl gold-gradient">{s.v}</div>
+                <div className="text-[10px] md:text-[11px] uppercase tracking-widest text-muted-foreground mt-2">{s.l}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Qualifications */}
+          <div className="mb-16 md:mb-20">
+            <SectionLabel align="left">Ключевые квалификации</SectionLabel>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
               {[
-                { v: "5 млрд ₽", l: "привлечено" },
-                { v: "6 000+", l: "проектов" },
-                { v: "1 200+", l: "резидентов" },
-              ].map((s) => (
-                <div key={s.l}>
-                  <div className="font-display text-2xl md:text-3xl gold-gradient">{s.v}</div>
-                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-2">{s.l}</div>
+                { year: "2015", title: "ICA Compliance", desc: "International Certificate — с отличием" },
+                { year: "2021", title: "Erickson Coaching", desc: "128 ч, аккредитация ICF" },
+                { year: "2023", title: "Венчурная аналитика", desc: "Московский инновационный кластер" },
+                { year: "2025", title: "Путь IPO", desc: "Московская биржа" },
+              ].map((q) => (
+                <div key={q.title} className="rounded-xl border border-border bg-card/30 p-5 group hover:border-gold/30 transition-colors">
+                  <div className="text-[10px] uppercase tracking-widest text-gold/60 mb-1">{q.year}</div>
+                  <div className="font-display text-sm md:text-base text-foreground">{q.title}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{q.desc}</div>
                 </div>
               ))}
             </div>
+          </div>
+
+          <div className="mb-14">
+            <SectionLabel align="left">Образование</SectionLabel>
+            <ul className="mt-4 space-y-3">
+              {[
+                { y: "2009", t: "Амурский государственный университет", d: "Экономист" },
+                { y: "2014", t: "Финансовый университет при Правительстве РФ", d: "Вторая специальность" },
+              ].map((e) => (
+                <li key={e.y} className="flex gap-4 items-baseline">
+                  <span className="text-gold/50 font-display text-xs shrink-0 w-10">{e.y}</span>
+                  <div>
+                    <div className="text-sm font-medium text-foreground">{e.t}</div>
+                    <div className="text-xs text-muted-foreground">{e.d}</div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center md:text-left">
+            <button
+              type="button"
+              onClick={() => setJoinOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-primary-foreground text-[11px] uppercase tracking-[0.2em] hover:opacity-90 transition-opacity"
+            >
+              Заявка на вступление <span aria-hidden>→</span>
+            </button>
           </div>
         </div>
       </section>
@@ -594,12 +626,13 @@ function Index() {
                   </div>
                 ))}
               </div>
-              <a
-                href="#"
+              <button
+                type="button"
+                onClick={() => setJoinOpen(true)}
                 className="mt-8 inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-primary-foreground text-[11px] uppercase tracking-[0.2em] hover:opacity-90 transition-opacity"
               >
                 Подать заявку <span aria-hidden>→</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -607,11 +640,41 @@ function Index() {
 
       <JoinCTA
         variant="solid"
+        onOpenJoin={() => setJoinOpen(true)}
         eyebrow="Связаться"
         title="Готовы познакомиться с клубом?"
         text="Оставьте заявку — мы предложим формат интервью и ответим на вопросы о вступлении."
         cta="Стать резидентом"
       />
+
+      <section className="pb-10 md:pb-14">
+        <div className="container-prose">
+          <div className="rounded-[2rem] neon-panel p-7 md:p-10">
+            <div className="grid md:grid-cols-[1.1fr_2fr] gap-8 md:gap-10 items-center">
+              <div className="space-y-4">
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Революционизируем инвестиционный клубный опыт: проверенные сделки, сильное окружение и инструменты для роста.
+                </p>
+                <div className="w-14 h-14 rounded-full border border-gold/35 flex items-center justify-center text-gold">
+                  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M4 4h16v16" />
+                    <path d="M6 18L18 6" />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-px bg-border/70 rounded-2xl overflow-hidden">
+                {heroMetrics.map((m) => (
+                  <div key={m.l} className="bg-background/55 p-6 md:p-7">
+                    <div className="font-display text-3xl md:text-4xl text-gold mb-2">{m.v}</div>
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">{m.l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* FOOTER */}
       <footer className="border-t border-border py-14 md:py-16">
@@ -624,7 +687,9 @@ function Index() {
             <div>
               <div className="text-[10px] uppercase tracking-[0.2em] text-gold mb-3">Контакты</div>
               <a
-                href="#"
+                href="https://t.me/gordost_club_bot"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex rounded-full border border-gold/35 px-5 py-2.5 text-sm text-foreground hover:border-gold hover:text-gold transition-colors"
               >
                 Telegram-бот
