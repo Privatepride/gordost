@@ -1,16 +1,12 @@
 {
-  # Keep our internal listener ports (HAProxy routes public :80/:443 here).
   http_port 9080
   https_port 9443
 }
 
 http://gordost.club:9080 {
-  # Public HTTP should not serve the site as "plain" (browsers show "Not secure").
-  # ACME HTTP-01 challenges must still work on :80.
   route {
     @acme path /.well-known/acme-challenge/*
     handle @acme {
-      # Let Caddy answer the ACME challenge (don't proxy to the app).
       file_server
     }
     redir https://gordost.club{uri} permanent
@@ -28,10 +24,78 @@ http://www.gordost.club:9080 {
 }
 
 https://gordost.club:9443 {
-  reverse_proxy 127.0.0.1:9101
+  route {
+    # API — Python backend на хосте
+    @api path /api/*
+    handle @api {
+      reverse_proxy host.docker.internal:9102
+    }
+    # Статические файлы
+    @static path /robots.txt /sitemap.xml
+    handle @static {
+      root * /srv
+      file_server
+    }
+    # Мероприятие 28 июля — финальная версия (из папки /28/)
+    @event28 path /28 /28/* /event-28
+    handle @event28 {
+      root * /srv
+      uri path_regexp ^/28/?$ /28/index.html
+      uri path_regexp ^/event-28/?$ /28/index.html
+      file_server
+    }
+    # Совместимость: /28-v2 редиректит на /28
+    @event28v2 path /28-v2 /28-v2/* /event-28-v2
+    handle @event28v2 {
+      redir https://gordost.club/28 permanent
+    }
+    # test_new
+    @testnew path /test_new /test_new/*
+    handle @testnew {
+      root * /srv
+      try_files {path} /test_new/index.html
+      file_server
+    }
+    # Политика конфиденциальности
+    @privacy path /privacy
+    handle @privacy {
+      root * /srv
+      rewrite * /privacy.html
+      file_server
+    }
+    # Политика обработки персональных данных
+    @personaldata path /personal-data
+    handle @personaldata {
+      root * /srv
+      rewrite * /personal-data.html
+      file_server
+    }
+    # Публичная оферта (старая)
+    @oferta path /oferta
+    handle @oferta {
+      root * /srv
+      rewrite * /oferta.html
+      file_server
+    }
+    # Оферта мероприятия 28 июля
+    @oferta28 path /oferta-28
+    handle @oferta28 {
+      root * /srv
+      rewrite * /oferta-28.html
+      file_server
+    }
+    # Маркетинговая страница
+    @marketing path /marketing
+    handle @marketing {
+      root * /srv
+      rewrite * /marketing.html
+      file_server
+    }
+    # Всё остальное — Vite SSR
+    reverse_proxy gordost-app:9101
+  }
 }
 
 https://www.gordost.club:9443 {
   redir https://gordost.club{uri} permanent
 }
-

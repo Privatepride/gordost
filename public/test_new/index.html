@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<link rel="preload" as="image" href="assets/palms.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/lion-walk.webp">
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;800&family=Manrope:wght@400;500;600;700&family=Alumni+Sans:wght@700;800&family=Oswald:wght@500;700&family=Yanone+Kaffeesatz:wght@600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#5f1c10;}
+a{color:#8a6d3a;} a:hover{color:#b08d4f;}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(45deg);opacity:.9;}50%{transform:translateY(7px) rotate(45deg);opacity:.35;}}
+@keyframes sway{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-9px) rotate(-0.6deg);}}
+
+/* Адаптивные переменные раскладки первого экрана (переопределяются на мобиле) */
+:root{
+  --reveal-top:14vh;
+  --lion-bottom:-4vh;
+  --lion-h:min(62vh,620px);
+  --btn-bottom:4.5vh;
+  --light-clip:polygon(11% 0%,89% 0%,52.5% 100%,47.5% 100%);
+}
+@media (max-width:820px){
+  :root{
+    --reveal-top:14vh;
+    /* лев поднят к низу экрана: нижний край чуть заходит под кнопку */
+    --lion-bottom:6vh;
+    /* увеличен в ~1.4× относительно прежних 42vh */
+    --lion-h:min(60vh,520px);
+    /* кнопка поднята выше */
+    --btn-bottom:8vh;
+    /* белый луч-треугольник: широкий верх (во всю ширину), низ остаётся
+       таким же узким как был (~5%). В зоне текстов луч достаточно широк,
+       чтобы перекрывать «МЕЖДУ БИЗНЕСОМ…» и «ТРЕТЬЕ МЕСТО…». */
+    --light-clip:polygon(0% 0%,100% 0%,52.5% 100%,47.5% 100%);
+  }
+  /* На мобиле scroll-анимация «осколков» неработоспособна (экран слишком мал,
+     осколки полностью перекрывают сцену с пальмами/львом). Показываем финальное
+     состояние сразу: прячем осколки, фиксируем льва и кнопку в видимых позициях.
+     !important нужен, чтобы перекрыть inline-стили, которые JS ставит через .style. */
+  [data-shard]{ display:none !important; }
+  [data-reveal]{ opacity:1 !important; transform:translate(-50%,0vh) !important; }
+  [data-lion]{ transform:translate(-50%,0vh) !important; }
+  /* убираем лишнее скролл-пространство, оставляя один экран */
+  [data-wrap]{ height:100vh !important; }
+}
+</style>
+</helmet>
+<div data-scroller style="height:100vh;overflow-y:auto;overflow-x:hidden;position:relative;background:#5f1c10;font-family:Manrope,sans-serif;scrollbar-width:thin;scrollbar-color:rgba(176,141,79,.45) transparent;">
+<div data-wrap style="height:335vh;position:relative;">
+<div data-stage style="position:sticky;top:0;height:100vh;overflow:hidden;">
+
+<div data-screen-label="ГОРДОСТЬ" style="position:absolute;inset:0;isolation:isolate;background-color:#7a2517;background-image:linear-gradient(180deg,rgba(122,37,23,.28) 0%,rgba(95,28,16,.12) 42%,rgba(50,12,6,.6) 100%),url('assets/palms.webp');background-size:cover;background-position:center;overflow:hidden;color:#fdf6ee;">
+  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(115% 95% at 50% 52%,rgba(15,4,2,0) 46%,rgba(15,4,2,.32) 78%,rgba(15,4,2,.62) 100%),linear-gradient(180deg,rgba(15,4,2,.5) 0%,rgba(15,4,2,0) 22%,rgba(15,4,2,0) 66%,rgba(15,4,2,.5) 100%);"></div>
+  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;clip-path:var(--light-clip);background:linear-gradient(to top,rgba(255,254,251,.98) 0%,rgba(255,252,247,.9) 32%,rgba(255,251,244,.66) 62%,rgba(255,253,249,.3) 85%,rgba(255,255,255,0) 100%);filter:blur(3px);"></div>
+  <div style="position:absolute;left:50%;top:31vh;width:min(80vw,900px);height:24vh;z-index:1;pointer-events:none;transform:translateX(-50%);background:radial-gradient(60% 60% at 50% 50%,rgba(255,253,249,.95) 0%,rgba(255,251,244,.5) 48%,rgba(255,255,255,0) 78%);filter:blur(8px);"></div>
+  <div style="position:absolute;left:50%;bottom:-6%;width:44%;height:40%;z-index:1;pointer-events:none;transform:translateX(-50%);background:radial-gradient(58% 92% at 50% 100%,rgba(255,253,248,.75) 0%,rgba(255,250,240,.28) 46%,rgba(255,255,255,0) 76%);filter:blur(7px);"></div>
+  <header style="position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:14px;padding:clamp(16px,3vh,32px) clamp(20px,4vw,56px);z-index:3;">
+    <img src="assets/logo.png" alt="Гордость" style="width:clamp(36px,3.4vw,50px);height:auto;display:block;">
+    <div>
+      <div style="font-family:Unbounded,sans-serif;font-weight:600;font-size:clamp(12px,1vw,16px);letter-spacing:.18em;color:#f6e8d3;">ГОРДОСТЬ</div>
+      <div style="font-size:clamp(9px,.7vw,11px);letter-spacing:.34em;color:rgba(246,232,211,.55);margin-top:2px;">ИНВЕСТКЛУБ</div>
+    </div>
+  </header>
+  <div data-reveal style="position:absolute;left:50%;top:var(--reveal-top);transform:translate(-50%,7vh);opacity:0;display:flex;flex-direction:column;align-items:center;gap:clamp(12px,2.4vh,28px);width:100%;padding:0 4vw;box-sizing:border-box;text-align:center;z-index:3;">
+    <sc-if value="{{ isGloss }}" hint-placeholder-val="{{ true }}">
+      <img src="assets/gordost-glass-crop.webp" alt="ГОРДОСТЬ" style="width:min(74vw,820px);height:auto;display:block;filter:drop-shadow(0 20px 34px rgba(20,4,2,.65));">
+    </sc-if>
+    <sc-if value="{{ isGold }}">
+      <div style="font-family:Unbounded,sans-serif;font-weight:800;font-size:clamp(42px,9vw,148px);line-height:1;background-image:linear-gradient(105deg,rgba(97,69,28,.5) 0%,rgba(97,69,28,0) 22%,rgba(255,255,255,.28) 40%,rgba(97,69,28,0) 58%,rgba(97,69,28,.45) 100%),url('assets/gold-texture.webp');background-size:cover;background-position:center;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 18px 30px rgba(50,8,2,.55));">ГОРДОСТЬ</div>
+    </sc-if>
+    <sc-if value="{{ isBrick }}">
+      <div style="font-family:Unbounded,sans-serif;font-weight:800;font-size:clamp(42px,9vw,148px);line-height:1;color:#3f1109;text-shadow:0 1px 0 rgba(255,255,255,.16),0 14px 34px rgba(0,0,0,.45);">ГОРДОСТЬ</div>
+    </sc-if>
+    <div style="font-family:Unbounded,sans-serif;font-weight:600;font-size:clamp(15px,2.1vw,30px);letter-spacing:.06em;color:#160b06;text-shadow:0 1px 0 rgba(255,255,255,.45);">МЕЖДУ БИЗНЕСОМ И СЕМЬЁЙ</div>
+    <div style="font-weight:700;font-size:clamp(11px,1.3vw,17px);letter-spacing:.3em;color:#3a1710;text-shadow:0 1px 0 rgba(255,255,255,.4);">ТРЕТЬЕ МЕСТО ДЛЯ ИНВЕСТОРА</div>
+  </div>
+  <div data-lion style="position:absolute;left:50%;bottom:var(--lion-bottom);transform:translate(-50%,82vh);z-index:2;will-change:transform;">
+    <img src="assets/lion-walk.webp" alt="Чёрный лев — талисман клуба" style="display:block;height:var(--lion-h);width:auto;max-width:92vw;object-fit:contain;filter:drop-shadow(0 42px 70px rgba(30,5,2,.55));animation:sway 5s ease-in-out infinite;">
+  </div>
+  <button data-reveal style="position:absolute;left:50%;bottom:var(--btn-bottom);transform:translate(-50%,7vh);opacity:0;z-index:4;background:linear-gradient(180deg,#2a2a2e,#0b0b0d);color:#e8d5a3;border:1px solid rgba(201,164,92,.65);border-radius:999px;padding:clamp(12px,1.6vh,16px) clamp(24px,3vw,38px);font-family:Manrope,sans-serif;font-weight:600;font-size:clamp(12px,1vw,15px);letter-spacing:.14em;white-space:nowrap;cursor:pointer;box-shadow:0 18px 40px rgba(0,0,0,.4);" style-hover="background:linear-gradient(180deg,#3a3a40,#101013);color:#f1e3b4;">ОСТАВИТЬ ЗАЯВКУ</button>
+</div>
+
+<div data-shard="0" data-screen-label="Hero" style="position:absolute;inset:0;clip-path:polygon(0% 0%,20% 0%,50% 100%,0% 100%);transform-origin:50% 100%;will-change:transform;background:var(--hero-bg,#f0ebe1);overflow:hidden;">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.35;pointer-events:none;"><line x1="20" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line><line x1="50" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line><line x1="80" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line></svg>
+  <header style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:clamp(16px,3vh,32px) clamp(20px,4vw,56px);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <img src="assets/logo.png" alt="Гордость" style="width:clamp(38px,3.6vw,54px);height:auto;display:block;">
+      <div>
+        <div style="font-family:Unbounded,sans-serif;font-weight:600;font-size:clamp(12px,1.1vw,17px);letter-spacing:.18em;color:#141419;">ГОРДОСТЬ</div>
+        <div style="font-size:clamp(9px,.7vw,11px);letter-spacing:.34em;color:#9a9083;margin-top:2px;">ИНВЕСТКЛУБ</div>
+      </div>
+    </div>
+    <button onClick="{{ leaveRequest }}" style="background:linear-gradient(180deg,#2a2a2e,#0b0b0d);color:#e8d5a3;border:1px solid rgba(201,164,92,.6);border-radius:999px;padding:12px 26px;font-family:Manrope,sans-serif;font-weight:600;font-size:clamp(11px,.95vw,14px);letter-spacing:.12em;white-space:nowrap;cursor:pointer;" style-hover="background:linear-gradient(180deg,#3a3a40,#101013);color:#f1e3b4;">ОСТАВИТЬ ЗАЯВКУ</button>
+  </header>
+  <main style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,1.4vh,18px);text-align:center;padding:0 3vw;">
+    <div style="display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,1.8vw,30px);">
+      <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(15vw,20vh);line-height:.8;letter-spacing:.015em;background-image:linear-gradient(115deg,rgba(255,255,255,0) 32%,rgba(255,255,255,.3) 39%,rgba(255,255,255,0) 47%),linear-gradient(178deg,#4b4b52 0%,#151517 34%,#08080a 52%,#2c2c32 74%,#0e0e10 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 14px 26px rgba(35,30,20,.3));">КЛУБ</div>
+      <div style="background:#0e0e11;color:#f3f2ee;font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(7.5vw,10vh);line-height:1;padding:clamp(4px,.7vw,12px) clamp(14px,2.2vw,40px);box-shadow:0 14px 30px rgba(30,25,15,.25);">ДЛЯ</div>
+    </div>
+    <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(19vw,26vh);line-height:.85;letter-spacing:.015em;background-image:linear-gradient(115deg,rgba(255,255,255,0) 32%,rgba(255,255,255,.3) 39%,rgba(255,255,255,0) 47%),linear-gradient(178deg,#4b4b52 0%,#151517 34%,#08080a 52%,#2c2c32 74%,#0e0e10 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 14px 26px rgba(35,30,20,.3));">ИНВЕСТОРОВ</div>
+    <div style="background:url('assets/gold-texture.webp') center/cover;color:#2b1f0a;font-weight:700;font-size:clamp(12px,1.6vw,26px);letter-spacing:.5em;text-indent:.5em;padding:clamp(8px,1.2vh,14px) clamp(18px,3vw,52px);box-shadow:0 12px 26px rgba(30,25,15,.22);">С КАПИТАЛОМ ОТ</div>
+    <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(20vw,28vh);line-height:.85;letter-spacing:.01em;white-space:nowrap;background-image:linear-gradient(105deg,rgba(97,69,28,.5) 0%,rgba(97,69,28,0) 22%,rgba(255,255,255,.28) 40%,rgba(97,69,28,0) 58%,rgba(97,69,28,.45) 100%),url('assets/gold-texture.webp');background-size:cover;background-position:center;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 16px 30px rgba(140,100,30,.38));">50 МЛН ₽</div>
+  </main>
+  <div style="position:absolute;left:50%;bottom:3.5vh;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;">
+    <div style="font-size:10px;letter-spacing:.4em;color:#9a9083;">ЛИСТАЙТЕ</div>
+    <div style="width:10px;height:10px;border-right:2px solid #b08d4f;border-bottom:2px solid #b08d4f;animation:floaty 1.6s ease-in-out infinite;"></div>
+  </div>
+</div>
+
+<div data-shard="1" style="position:absolute;inset:0;clip-path:polygon(20% 0%,50% 0%,50% 100%);transform-origin:50% 100%;will-change:transform;background:var(--hero-bg,#f0ebe1);overflow:hidden;">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.35;pointer-events:none;"><line x1="20" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line><line x1="50" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line><line x1="80" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line></svg>
+  <header style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:clamp(16px,3vh,32px) clamp(20px,4vw,56px);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <img src="assets/logo.png" alt="Гордость" style="width:clamp(38px,3.6vw,54px);height:auto;display:block;">
+      <div>
+        <div style="font-family:Unbounded,sans-serif;font-weight:600;font-size:clamp(12px,1.1vw,17px);letter-spacing:.18em;color:#141419;">ГОРДОСТЬ</div>
+        <div style="font-size:clamp(9px,.7vw,11px);letter-spacing:.34em;color:#9a9083;margin-top:2px;">ИНВЕСТКЛУБ</div>
+      </div>
+    </div>
+    <button onClick="{{ leaveRequest }}" style="background:linear-gradient(180deg,#2a2a2e,#0b0b0d);color:#e8d5a3;border:1px solid rgba(201,164,92,.6);border-radius:999px;padding:12px 26px;font-family:Manrope,sans-serif;font-weight:600;font-size:clamp(11px,.95vw,14px);letter-spacing:.12em;white-space:nowrap;cursor:pointer;" style-hover="background:linear-gradient(180deg,#3a3a40,#101013);color:#f1e3b4;">ОСТАВИТЬ ЗАЯВКУ</button>
+  </header>
+  <main style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,1.4vh,18px);text-align:center;padding:0 3vw;">
+    <div style="display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,1.8vw,30px);">
+      <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(15vw,20vh);line-height:.8;letter-spacing:.015em;background-image:linear-gradient(115deg,rgba(255,255,255,0) 32%,rgba(255,255,255,.3) 39%,rgba(255,255,255,0) 47%),linear-gradient(178deg,#4b4b52 0%,#151517 34%,#08080a 52%,#2c2c32 74%,#0e0e10 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 14px 26px rgba(35,30,20,.3));">КЛУБ</div>
+      <div style="background:#0e0e11;color:#f3f2ee;font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(7.5vw,10vh);line-height:1;padding:clamp(4px,.7vw,12px) clamp(14px,2.2vw,40px);box-shadow:0 14px 30px rgba(30,25,15,.25);">ДЛЯ</div>
+    </div>
+    <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(19vw,26vh);line-height:.85;letter-spacing:.015em;background-image:linear-gradient(115deg,rgba(255,255,255,0) 32%,rgba(255,255,255,.3) 39%,rgba(255,255,255,0) 47%),linear-gradient(178deg,#4b4b52 0%,#151517 34%,#08080a 52%,#2c2c32 74%,#0e0e10 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 14px 26px rgba(35,30,20,.3));">ИНВЕСТОРОВ</div>
+    <div style="background:url('assets/gold-texture.webp') center/cover;color:#2b1f0a;font-weight:700;font-size:clamp(12px,1.6vw,26px);letter-spacing:.5em;text-indent:.5em;padding:clamp(8px,1.2vh,14px) clamp(18px,3vw,52px);box-shadow:0 12px 26px rgba(30,25,15,.22);">С КАПИТАЛОМ ОТ</div>
+    <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(20vw,28vh);line-height:.85;letter-spacing:.01em;white-space:nowrap;background-image:linear-gradient(105deg,rgba(97,69,28,.5) 0%,rgba(97,69,28,0) 22%,rgba(255,255,255,.28) 40%,rgba(97,69,28,0) 58%,rgba(97,69,28,.45) 100%),url('assets/gold-texture.webp');background-size:cover;background-position:center;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 16px 30px rgba(140,100,30,.38));">50 МЛН ₽</div>
+  </main>
+  <div style="position:absolute;left:50%;bottom:3.5vh;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;">
+    <div style="font-size:10px;letter-spacing:.4em;color:#9a9083;">ЛИСТАЙТЕ</div>
+    <div style="width:10px;height:10px;border-right:2px solid #b08d4f;border-bottom:2px solid #b08d4f;animation:floaty 1.6s ease-in-out infinite;"></div>
+  </div>
+</div>
+
+<div data-shard="2" style="position:absolute;inset:0;clip-path:polygon(50% 0%,80% 0%,50% 100%);transform-origin:50% 100%;will-change:transform;background:var(--hero-bg,#f0ebe1);overflow:hidden;">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.35;pointer-events:none;"><line x1="20" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line><line x1="50" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line><line x1="80" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line></svg>
+  <header style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:clamp(16px,3vh,32px) clamp(20px,4vw,56px);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <img src="assets/logo.png" alt="Гордость" style="width:clamp(38px,3.6vw,54px);height:auto;display:block;">
+      <div>
+        <div style="font-family:Unbounded,sans-serif;font-weight:600;font-size:clamp(12px,1.1vw,17px);letter-spacing:.18em;color:#141419;">ГОРДОСТЬ</div>
+        <div style="font-size:clamp(9px,.7vw,11px);letter-spacing:.34em;color:#9a9083;margin-top:2px;">ИНВЕСТКЛУБ</div>
+      </div>
+    </div>
+    <button onClick="{{ leaveRequest }}" style="background:linear-gradient(180deg,#2a2a2e,#0b0b0d);color:#e8d5a3;border:1px solid rgba(201,164,92,.6);border-radius:999px;padding:12px 26px;font-family:Manrope,sans-serif;font-weight:600;font-size:clamp(11px,.95vw,14px);letter-spacing:.12em;white-space:nowrap;cursor:pointer;" style-hover="background:linear-gradient(180deg,#3a3a40,#101013);color:#f1e3b4;">ОСТАВИТЬ ЗАЯВКУ</button>
+  </header>
+  <main style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,1.4vh,18px);text-align:center;padding:0 3vw;">
+    <div style="display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,1.8vw,30px);">
+      <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(15vw,20vh);line-height:.8;letter-spacing:.015em;background-image:linear-gradient(115deg,rgba(255,255,255,0) 32%,rgba(255,255,255,.3) 39%,rgba(255,255,255,0) 47%),linear-gradient(178deg,#4b4b52 0%,#151517 34%,#08080a 52%,#2c2c32 74%,#0e0e10 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 14px 26px rgba(35,30,20,.3));">КЛУБ</div>
+      <div style="background:#0e0e11;color:#f3f2ee;font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(7.5vw,10vh);line-height:1;padding:clamp(4px,.7vw,12px) clamp(14px,2.2vw,40px);box-shadow:0 14px 30px rgba(30,25,15,.25);">ДЛЯ</div>
+    </div>
+    <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(19vw,26vh);line-height:.85;letter-spacing:.015em;background-image:linear-gradient(115deg,rgba(255,255,255,0) 32%,rgba(255,255,255,.3) 39%,rgba(255,255,255,0) 47%),linear-gradient(178deg,#4b4b52 0%,#151517 34%,#08080a 52%,#2c2c32 74%,#0e0e10 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 14px 26px rgba(35,30,20,.3));">ИНВЕСТОРОВ</div>
+    <div style="background:url('assets/gold-texture.webp') center/cover;color:#2b1f0a;font-weight:700;font-size:clamp(12px,1.6vw,26px);letter-spacing:.5em;text-indent:.5em;padding:clamp(8px,1.2vh,14px) clamp(18px,3vw,52px);box-shadow:0 12px 26px rgba(30,25,15,.22);">С КАПИТАЛОМ ОТ</div>
+    <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(20vw,28vh);line-height:.85;letter-spacing:.01em;white-space:nowrap;background-image:linear-gradient(105deg,rgba(97,69,28,.5) 0%,rgba(97,69,28,0) 22%,rgba(255,255,255,.28) 40%,rgba(97,69,28,0) 58%,rgba(97,69,28,.45) 100%),url('assets/gold-texture.webp');background-size:cover;background-position:center;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 16px 30px rgba(140,100,30,.38));">50 МЛН ₽</div>
+  </main>
+  <div style="position:absolute;left:50%;bottom:3.5vh;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;">
+    <div style="font-size:10px;letter-spacing:.4em;color:#9a9083;">ЛИСТАЙТЕ</div>
+    <div style="width:10px;height:10px;border-right:2px solid #b08d4f;border-bottom:2px solid #b08d4f;animation:floaty 1.6s ease-in-out infinite;"></div>
+  </div>
+</div>
+
+<div data-shard="3" style="position:absolute;inset:0;clip-path:polygon(80% 0%,100% 0%,100% 100%,50% 100%);transform-origin:50% 100%;will-change:transform;background:var(--hero-bg,#f0ebe1);overflow:hidden;">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.35;pointer-events:none;"><line x1="20" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line><line x1="50" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line><line x1="80" y1="0" x2="50" y2="100" stroke="#b08d4f" vector-effect="non-scaling-stroke" stroke-width="1"></line></svg>
+  <header style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:clamp(16px,3vh,32px) clamp(20px,4vw,56px);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <img src="assets/logo.png" alt="Гордость" style="width:clamp(38px,3.6vw,54px);height:auto;display:block;">
+      <div>
+        <div style="font-family:Unbounded,sans-serif;font-weight:600;font-size:clamp(12px,1.1vw,17px);letter-spacing:.18em;color:#141419;">ГОРДОСТЬ</div>
+        <div style="font-size:clamp(9px,.7vw,11px);letter-spacing:.34em;color:#9a9083;margin-top:2px;">ИНВЕСТКЛУБ</div>
+      </div>
+    </div>
+    <button onClick="{{ leaveRequest }}" style="background:linear-gradient(180deg,#2a2a2e,#0b0b0d);color:#e8d5a3;border:1px solid rgba(201,164,92,.6);border-radius:999px;padding:12px 26px;font-family:Manrope,sans-serif;font-weight:600;font-size:clamp(11px,.95vw,14px);letter-spacing:.12em;white-space:nowrap;cursor:pointer;" style-hover="background:linear-gradient(180deg,#3a3a40,#101013);color:#f1e3b4;">ОСТАВИТЬ ЗАЯВКУ</button>
+  </header>
+  <main style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,1.4vh,18px);text-align:center;padding:0 3vw;">
+    <div style="display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,1.8vw,30px);">
+      <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(15vw,20vh);line-height:.8;letter-spacing:.015em;background-image:linear-gradient(115deg,rgba(255,255,255,0) 32%,rgba(255,255,255,.3) 39%,rgba(255,255,255,0) 47%),linear-gradient(178deg,#4b4b52 0%,#151517 34%,#08080a 52%,#2c2c32 74%,#0e0e10 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 14px 26px rgba(35,30,20,.3));">КЛУБ</div>
+      <div style="background:#0e0e11;color:#f3f2ee;font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(7.5vw,10vh);line-height:1;padding:clamp(4px,.7vw,12px) clamp(14px,2.2vw,40px);box-shadow:0 14px 30px rgba(30,25,15,.25);">ДЛЯ</div>
+    </div>
+    <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(19vw,26vh);line-height:.85;letter-spacing:.015em;background-image:linear-gradient(115deg,rgba(255,255,255,0) 32%,rgba(255,255,255,.3) 39%,rgba(255,255,255,0) 47%),linear-gradient(178deg,#4b4b52 0%,#151517 34%,#08080a 52%,#2c2c32 74%,#0e0e10 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 14px 26px rgba(35,30,20,.3));">ИНВЕСТОРОВ</div>
+    <div style="background:url('assets/gold-texture.webp') center/cover;color:#2b1f0a;font-weight:700;font-size:clamp(12px,1.6vw,26px);letter-spacing:.5em;text-indent:.5em;padding:clamp(8px,1.2vh,14px) clamp(18px,3vw,52px);box-shadow:0 12px 26px rgba(30,25,15,.22);">С КАПИТАЛОМ ОТ</div>
+    <div style="font-family:var(--hero-font,'Alumni Sans'),sans-serif;font-weight:800;font-size:min(20vw,28vh);line-height:.85;letter-spacing:.01em;white-space:nowrap;background-image:linear-gradient(105deg,rgba(97,69,28,.5) 0%,rgba(97,69,28,0) 22%,rgba(255,255,255,.28) 40%,rgba(97,69,28,0) 58%,rgba(97,69,28,.45) 100%),url('assets/gold-texture.webp');background-size:cover;background-position:center;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 16px 30px rgba(140,100,30,.38));">50 МЛН ₽</div>
+  </main>
+  <div style="position:absolute;left:50%;bottom:3.5vh;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;">
+    <div style="font-size:10px;letter-spacing:.4em;color:#9a9083;">ЛИСТАЙТЕ</div>
+    <div style="width:10px;height:10px;border-right:2px solid #b08d4f;border-bottom:2px solid #b08d4f;animation:floaty 1.6s ease-in-out infinite;"></div>
+  </div>
+</div>
+
+</div>
+</div>
+
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroFont&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Alumni Sans&quot;,&quot;Oswald&quot;,&quot;Yanone Kaffeesatz&quot;,&quot;Unbounded&quot;],&quot;default&quot;:&quot;Alumni Sans&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;heroTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;тёплый айвори&quot;,&quot;холодный белый&quot;],&quot;default&quot;:&quot;холодный белый&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;gordostStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;чёрный глянец&quot;,&quot;золотой металл&quot;,&quot;кирпичный объём&quot;],&quot;default&quot;:&quot;чёрный глянец&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Блок ГОРДОСТЬ&quot;},&quot;scrollLength&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:1.2,&quot;max&quot;:3.5,&quot;step&quot;:0.1,&quot;default&quot;:2,&quot;unit&quot;:&quot;×&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Анимация&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this._startLoop(); this._applyTone(); }
+  componentDidUpdate() { this._startLoop(); this._applyTone(); }
+  componentWillUnmount() {
+    this._dead = true;
+    if (this._rafLoop) cancelAnimationFrame(this._rafLoop);
+    if (this._iv) clearInterval(this._iv);
+  }
+  _startLoop() {
+    if (this._dead) return;
+    if (!this._rafLoop) {
+      const loop = () => { this._rafLoop = requestAnimationFrame(loop); this._frame(); };
+      this._rafLoop = requestAnimationFrame(loop);
+    }
+    if (!this._iv) this._iv = setInterval(() => this._frame(), 200);
+  }
+  _ensure() { if (!this._sc || !this._sc.isConnected) this._sc = document.querySelector('[data-scroller]'); }
+  _frame() {
+    this._ensure();
+    if (!this._sc) return;
+    this._tick();
+  }
+  _applyTone() {
+    const st = document.querySelector('[data-stage]');
+    if (!st) return;
+    st.style.setProperty('--hero-bg', this.props.heroTone === 'холодный белый' ? '#f3f4f6' : '#f0ebe1');
+    const f = this.props.heroFont ?? 'Alumni Sans';
+    st.style.setProperty('--hero-font', "'" + f + "'");
+  }
+  _len() { return (this.props.scrollLength ?? 2) * window.innerHeight; }
+  _tick() {
+    this._raf = null;
+    const vh = window.innerHeight, len = this._len();
+    const wrap = document.querySelector('[data-wrap]');
+    if (!wrap) return;
+    wrap.style.height = (len + vh * 1.35) + 'px';
+    const sy = this._sc ? this._sc.scrollTop : 0;
+    const p = Math.min(1, Math.max(0, sy / len));
+    const ease = t => { t = Math.min(1, Math.max(0, t)); return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
+    const inner = ease(p * 1.3), outer = ease((p - .12) * 1.3);
+    const rot = [-115 * outer, -58 * inner, 58 * inner, 115 * outer];
+    const tx = [-16 * outer, -7 * inner, 7 * inner, 16 * outer];
+    const fade = p > .78 ? Math.max(0, 1 - (p - .78) / .15) : 1;
+    document.querySelectorAll('[data-shard]').forEach((s, i) => {
+      s.style.transform = 'translateX(' + tx[i] + 'vw) rotate(' + rot[i] + 'deg)';
+      s.style.opacity = fade;
+      s.style.pointerEvents = p > .4 ? 'none' : 'auto';
+      s.style.visibility = fade <= 0 ? 'hidden' : 'visible';
+    });
+    // На мобиле лев и кнопка видны сразу в финальной позиции (без scroll-анимации появления).
+    const pw = ease((p - .3) / .45);
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      el.style.opacity = pw;
+      el.style.transform = 'translate(-50%,' + ((1 - pw) * 7) + 'vh)';
+    });
+    const pl = ease((p - .4) / .55);
+    const lion = document.querySelector('[data-lion]');
+    if (lion) lion.style.transform = 'translate(-50%,' + ((1 - pl) * 82) + 'vh)';
+  }
+  renderVals() {
+    this._startLoop();
+    const g = this.props.gordostStyle ?? 'чёрный глянец';
+    return {
+      isGloss: g === 'чёрный глянец',
+      isGold: g === 'золотой металл',
+      isBrick: g === 'кирпичный объём',
+      leaveRequest: () => { this._ensure(); if (this._sc) this._sc.scrollTo({ top: this._len() * 1.05, behavior: 'smooth' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
