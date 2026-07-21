@@ -1,0 +1,16 @@
+/* Локальные шрифты из ТЗ — положите файлы в /fonts/ на сервере (см. public/fonts/). */
+@font-face {
+  font-family: "Copperplate";
+  src: url("/fonts/copperplate.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mazzard Soft M";
+  src: url("/fonts/mazzardh-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

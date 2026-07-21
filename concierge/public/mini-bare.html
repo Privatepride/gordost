@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <title>Тест Mini App</title>
+    <script src="/tg-web-app.js"></script>
+    <script>
+      try {
+        if (window.Telegram && window.Telegram.WebApp) {
+          window.Telegram.WebApp.ready();
+          window.Telegram.WebApp.expand();
+        }
+      } catch (e) {}
+    </script>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 16px;
+        background: #1a1510;
+        color: #f4efe6;
+        line-height: 1.45;
+      }
+      code {
+        display: block;
+        white-space: pre-wrap;
+        word-break: break-all;
+        font-size: 13px;
+        margin-top: 8px;
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="font-size: 19px; margin: 0 0 12px">Гордость — тест WebView</h1>
+    <p id="out">Загрузка…</p>
+    <script>
+      (function () {
+        var el = document.getElementById("out");
+        var w = window.Telegram && window.Telegram.WebApp;
+        if (!w) {
+          el.innerHTML =
+            "Нет <code>window.Telegram.WebApp</code>. Страница открыта <b>не</b> как Mini App внутри Telegram (или клиент не поддерживает Web Apps).";
+          return;
+        }
+        var u = w.initDataUnsafe && w.initDataUnsafe.user;
+        el.innerHTML =
+          "Mini App API доступен.<br><br>Версия: <code>" +
+          String(w.version || "?") +
+          "</code><br>Платформа: <code>" +
+          String(w.platform || "?") +
+          "</code><br>initData (длина): <code>" +
+          String((w.initData && w.initData.length) || 0) +
+          "</code><br>Пользователь: <code>" +
+          (u ? JSON.stringify({ id: u.id, username: u.username }) : "нет") +
+          "</code>";
+      })();
+    </script>
+  </body>
+</html>

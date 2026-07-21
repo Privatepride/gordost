@@ -30,3 +30,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# concierge/ — Telegram Mini App
+concierge/.env
+concierge/.env.local
+concierge/data/
+concierge/dist-server/
+concierge/*.pem
+concierge/concierge-export.json
+concierge/concierge-patched.json

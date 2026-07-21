@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-server
+.env
+.env.local
+*.pem
+concierge-export.json
+concierge-patched.json
