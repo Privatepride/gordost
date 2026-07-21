@@ -871,6 +871,82 @@ nav .burger{display:none; background:none; border:none; color:var(--ink-strong);
 .faq-item .fa p{font-size:.92rem; color:var(--muted); line-height:1.6}
 @media(max-width:760px){.faq{grid-template-columns:1fr}.faq-item .fq{padding-right:0; padding-bottom:6px}.faq-item .fa{padding-top:6px}}
 
+/* ============================================================ ЛИД-МАГНИТЫ — бонусы при регистрации */
+.s-leadmagnet{background:var(--canvas); padding-bottom:32px}
+.leadmagnet-grid{display:grid; grid-template-columns:1fr 1.1fr; gap:16px; margin-bottom:36px}
+.lm-card{
+  position:relative;
+  padding:36px 32px 32px;
+  background:var(--canvas);
+  border:1px solid var(--fog);
+  border-radius:var(--r);
+  display:flex; flex-direction:column;
+  transition:transform var(--t), border-color var(--t), box-shadow var(--t);
+}
+.lm-card:hover{transform:translateY(-3px); border-color:var(--ash); box-shadow:var(--shadow-card-hover, 0 12px 32px -12px rgba(20,20,25,.12))}
+/* Featured карточка (анализ рынка) — золотая рамка + лёгкий фон */
+.lm-card-featured{
+  border:1px solid var(--gold-line);
+  background:linear-gradient(165deg, rgba(201,164,92,.05) 0%, var(--canvas) 40%);
+  box-shadow:0 8px 32px -16px rgba(201,164,92,.3);
+}
+.lm-card-featured:hover{border-color:var(--gold-1); box-shadow:0 16px 40px -16px rgba(201,164,92,.4)}
+.lm-badge{
+  position:absolute; top:-10px; right:24px;
+  background:var(--canvas); padding:2px 12px;
+  font:600 10px/1.6 var(--f-mono); letter-spacing:.14em;
+  text-transform:uppercase; color:var(--gold-3);
+  border:1px solid var(--gold-line); border-radius:var(--r-pill);
+}
+.lm-icon{
+  width:56px; height:56px; border-radius:14px;
+  background:var(--linen); color:var(--ink-strong);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:20px;
+}
+.lm-icon svg{width:32px; height:32px}
+.lm-icon-gold{
+  background:linear-gradient(145deg, rgba(201,164,92,.18), rgba(201,164,92,.06));
+  color:var(--gold-3);
+}
+.lm-price-free{
+  display:inline-block; align-self:flex-start;
+  font:700 11px/1 var(--f-mono); letter-spacing:.16em;
+  text-transform:uppercase; color:var(--red);
+  padding:5px 10px; background:var(--red-acrylic);
+  border-radius:var(--r-pill); margin-bottom:14px;
+}
+.lm-title{
+  font:700 clamp(1.25rem, 2vw, 1.6rem)/1.2 var(--f-display);
+  color:var(--ink-strong); letter-spacing:-.015em;
+  margin-bottom:12px;
+}
+.lm-desc{
+  font-size:var(--t-body-sm); color:var(--steel);
+  line-height:1.6; margin-bottom:18px;
+}
+.lm-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+.lm-list li{position:relative; padding-left:18px; font-size:var(--t-body-sm); color:var(--ink); line-height:1.5}
+.lm-list li::before{content:"·"; position:absolute; left:4px; top:-.1em; color:var(--gold-1); font-weight:700; font-size:1.3rem; line-height:1}
+/* CTA под карточками */
+.leadmagnet-cta{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:24px; flex-wrap:wrap;
+  padding:28px 32px;
+  background:var(--ink); color:#fff;
+  border-radius:var(--r);
+}
+.lm-cta-text{font-size:var(--t-body-sm); color:rgba(255,255,255,.7); line-height:1.55; margin:0; max-width:48ch}
+.lm-cta-btn{flex-shrink:0}
+.lm-cta-btn .arr{color:#fff}
+/* Адаптив */
+@media(max-width:820px){
+  .leadmagnet-grid{grid-template-columns:1fr}
+  .lm-card{padding:28px 24px}
+  .leadmagnet-cta{flex-direction:column; align-items:stretch; text-align:center; padding:24px}
+  .lm-cta-btn{align-self:center}
+}
+
 /* ============================================================ FORM SECTION (Action — фокус) */
 .s-form{background:var(--bg-2); border-top:1px solid var(--line)}
 .form-head{margin-bottom:46px}
@@ -1737,6 +1813,62 @@ body.counters-loading [data-total-remaining]:not(:root)::before{
       <div class="faq-item row-state"><div class="fq">А если мою заявку отклонят?</div><div class="fa"><p>Вы ничего не платите. Оплата возможна только после прохождения отбора.</p></div></div>
       <div class="faq-item row-state"><div class="fq">Как работает доступ к анкетам для VIP?</div><div class="fa"><p>После ивента VIP-участник может запросить контакт любого участника через бота. Мы передаём запрос, и контакт открывается только при согласии второй стороны.</p></div></div>
       <div class="faq-item row-state"><div class="fq">Есть ли дресс-код?</div><div class="fa"><p>Строгих требований нет. Большинство приходит в smart casual.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ ЛИД-МАГНИТЫ — бонусы при регистрации -->
+<section class="s s-leadmagnet reveal" id="bonuses">
+  <div class="ct">
+    <div class="sec-head sec-head-center">
+      <span class="eyebrow">Бонусы при регистрации</span>
+      <h2 class="title">Забираете сразу<br>после заявки</h2>
+      <p class="lead">Два материала, которые мы обычно даём только резидентам клуба. Приходят в Telegram-бот после отправки анкеты.</p>
+    </div>
+
+    <div class="leadmagnet-grid reveal-stagger group">
+      <article data-stagger-item class="lm-card group-item">
+        <div class="lm-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="24" r="20"/>
+            <path d="M24 8 L28 20 L40 20 L30 28 L34 40 L24 32 L14 40 L18 28 L8 20 L20 20 Z"/>
+          </svg>
+        </div>
+        <div class="lm-price-free">бесплатно</div>
+        <h3 class="lm-title">Тест «Какой вы инвестор»</h3>
+        <p class="lm-desc">20 минут — и вы знаете свой инвестор-психотип. В каком формате вы принимаете решения, где ваши сильные стороны, а где слепые зоны, какие ошибки повторяются раз за разом и как их остановить. С практичными выводами, а не общими словами.</p>
+        <ul class="lm-list">
+          <li>Ваш паттерн принятия решений</li>
+          <li>Сильные стороны и слепые зоны</li>
+          <li>Куда вы склонны терять деньги</li>
+          <li>Как перестать повторять одни и те же ошибки</li>
+        </ul>
+      </article>
+
+      <article data-stagger-item class="lm-card lm-card-featured group-item">
+        <div class="lm-badge">стоимость 10 000 ₽</div>
+        <div class="lm-icon lm-icon-gold" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 40 L18 22 L26 30 L36 14 L42 22"/>
+            <path d="M6 42 L42 42" opacity="0.5"/>
+            <rect x="34" y="12" width="6" height="6" rx="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div class="lm-price-free">бесплатно</div>
+        <h3 class="lm-title">Анализ рынка инвестиций в недвижимость</h3>
+        <p class="lm-desc">Полный разбор: какие сегменты недвижимости растут, какие стагнируют и почему. Конкретные цифры по доходности, ключевые риски и точки входа, которые остаются незамеченными на открытом рынке.</p>
+        <ul class="lm-list">
+          <li>Доходность по сегментам: жилая, коммерческая, доходные дома</li>
+          <li>Где сейчас перегрев, а где недооценка</li>
+          <li>Налоговые и юридические нюансы сделок</li>
+          <li>Что меняется во втором полугодии 2026</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="leadmagnet-cta reveal">
+      <p class="lm-cta-text">Оба материала приходят в Telegram-бот сразу после отправки анкеты. Без звонков и допродаж.</p>
+      <a href="#form" class="btn btn-primary magnetic lm-cta-btn">Получить бонусы<span class="arr">→</span></a>
     </div>
   </div>
 </section>
