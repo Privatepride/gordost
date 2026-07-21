@@ -853,6 +853,9 @@ nav .burger{display:none; background:none; border:none; color:var(--ink-strong);
 /* Силуэт-заглушка — тёмный портрет-иконка, пока нет фото */
 .sp .av.av-silhouette svg{width:100%; height:100%; fill:var(--ash); padding:6px}
 .sp .av.av-silhouette::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 40%, var(--linen) 100%); opacity:.3; pointer-events:none}
+/* Фото спикера */
+.sp .av.av-photo{background:var(--canvas); padding:0}
+.sp .av.av-photo img{width:100%; height:100%; object-fit:cover; border-radius:50%}
 /* Секретный спикер — золотой акцент, иконка вопроса */
 .sp .av.av-secret{background:var(--ink); border-color:var(--gold-line)}
 .sp .av.av-secret svg{width:60%; height:60%; color:var(--gold-2)}
@@ -1705,7 +1708,7 @@ body.counters-loading [data-total-remaining]:not(:root)::before{
         <div class="info"><h4>Дмитрий Махначев</h4><p>Инвестор, аналитик. Фондовый рынок, защитные инструменты, портфельные стратегии.</p></div>
       </div>
       <div class="sp group-item" data-stagger-item>
-        <div class="av av-silhouette" data-speaker="merkuryeva"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="11"/><path d="M12 56c0-11 9-18 20-18s20 7 20 18"/></svg></div>
+        <div class="av av-photo" data-speaker="merkuryeva"><img src="/28/assets/speaker-merkuryeva.webp" alt="Дарья Меркурьева"/></div>
         <div class="info"><h4>Дарья Меркурьева</h4><p>CEO «Гордость». Стратегия, продукт, AI-инструменты сообщества.</p></div>
       </div>
       <div class="sp group-item" data-stagger-item>
