@@ -101,6 +101,13 @@ https://gordost.club:9443 {
       rewrite * /marketing.html
       file_server
     }
+    # Новая (предрелизная) версия главной страницы — self-contained HTML-бандл из папки /new/
+    @newsite path /new /new/*
+    handle @newsite {
+      root * /srv
+      uri path_regexp ^/new/?$ /new/index.html
+      file_server
+    }
     # Всё остальное — Vite SSR
     reverse_proxy gordost-app:9101
   }
