@@ -23,6 +23,16 @@ http://www.gordost.club:9080 {
   }
 }
 
+http://concierge.gordost.club:9080 {
+  route {
+    @acme path /.well-known/acme-challenge/*
+    handle @acme {
+      file_server
+    }
+    redir https://concierge.gordost.club{uri} permanent
+  }
+}
+
 https://gordost.club:9443 {
   route {
     # API — Python backend на хосте
@@ -94,6 +104,10 @@ https://gordost.club:9443 {
     # Всё остальное — Vite SSR
     reverse_proxy gordost-app:9101
   }
+}
+
+https://concierge.gordost.club:9443 {
+  reverse_proxy http://155.212.219.128:8787
 }
 
 https://www.gordost.club:9443 {

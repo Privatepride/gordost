@@ -73,6 +73,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <script src="/cookie-consent.js" defer />
         <Scripts />
       </body>
     </html>
