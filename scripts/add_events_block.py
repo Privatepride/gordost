@@ -1,22 +1,15 @@
 #!/usr/bin/env python3
-"""Add the «Наши мероприятия» block to /new bundler template.
+"""Add the «Наши мероприятия» block to /new bundler template (v2 — fixed).
 
-Inserts a new section before the existing «06 — СОБЫТИЯ» section, containing:
-  - header: «Наши мероприятия» + lead about event formats adding brightness
-  - horizontal scroll timeline of PAST events (by month, series collapsed)
-    each card has a navy/gold photo placeholder (until Baserow photos are wired)
-  - a divider
-  - «ЧТО ДАЛЬШЕ — АКТУАЛЬНЫЕ» block of FUTURE events with exact dates
-    open events get a «Записаться» button → opens registration modal
-  - a registration modal form (ФИО, Telegram, Email, Телефон, Опыт, consent)
-    that POSTs to /api/v1/events/<event_id>/register
+v2 fixes vs v1:
+  - NO inline onmouseover/onmouseout (caused React error #231). Hover effects
+    are done via CSS <style> :hover rules + data attributes, never string handlers.
+  - cookie-consent.js wired into <head> (the consent banner was missing on /new).
+  - Future-event cards: buttons always aligned to bottom (flex column + margin-top:auto);
+    closed event label renamed to «только для резидентов».
+  - Block inserted AFTER section «06 — СОБЫТИЯ» (before 07 КОНСЬЕРЖ), not before it.
 
-The block uses the existing site visual language (Unbounded, palette
-#0D1626/#940907/#A87F3A/#EAE3D4/#F1EDE3) and the full-bleed centered padding
-convention max(32px,calc((100% - 1240px)/2)).
-
-Photo normalization (filter A, approved): grayscale(.35) sepia(.18) contrast(1.05) brightness(1.02)
-— applied to <img> inside media slots. Placeholders are used until Baserow photos arrive.
+Source: /root/gordost/public/new/index.html (clean full-bleed base, no events block).
 """
 
 import json
@@ -27,12 +20,7 @@ from pathlib import Path
 SRC = Path("/root/gordost/public/new/index.html")
 DATA = Path("/tmp/events_data.json")
 
-# The chosen photo filter (approved approach A)
-PHOTO_FILTER = "grayscale(.35) sepia(.18) contrast(1.05) brightness(1.02)"
-# centered horizontal padding (matches the rest of the page after full-bleed transform)
 HPAD = "max(32px,calc((100% - 1240px)/2))"
-
-# Palette
 NAVY = "#0D1626"
 CREAM = "#F1EDE3"
 BEIGE = "#EAE3D4"
@@ -41,10 +29,9 @@ GOLD_2 = "#A87F3A"
 BORDEAU = "#940907"
 
 
-def media_placeholder(letter: str) -> str:
-    """Navy→gold gradient placeholder with a big format letter."""
+def media_placeholder(letter: str, ar: str = "3/2") -> str:
     return (
-        '<div style="position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;'
+        '<div style="position:relative;width:100%;aspect-ratio:' + ar + ';overflow:hidden;'
         'background:linear-gradient(135deg,#0D1626 0%,#1a2942 55%,#A87F3A 140%)">'
         '<span style="position:absolute;inset:0;display:flex;align-items:center;'
         'justify-content:center;font-family:\'Unbounded\',sans-serif;font-weight:800;'
@@ -54,13 +41,12 @@ def media_placeholder(letter: str) -> str:
 
 
 def past_card(month: str, ev: dict) -> str:
-    """One past-event card in the scroll timeline."""
     count = f' · ×{ev["count"]}' if ev["count"] > 1 else ""
     fmt_label = "ОНЛАЙН" if ev["fmt"] == "online" else "ОФФЛАЙН"
     fmt_color = "#A87F3A" if ev["fmt"] == "online" else "#0D1626"
     media = media_placeholder(ev["letter"])
     return (
-        '<div style="flex:none;width:280px;display:flex;flex-direction:column;'
+        '<div class="ev-card-past" style="flex:none;width:280px;display:flex;flex-direction:column;'
         'scroll-snap-align:start">'
         f'{media}'
         f'<div style="font-size:11px;letter-spacing:.16em;color:#A87F3A;'
@@ -70,55 +56,43 @@ def past_card(month: str, ev: dict) -> str:
         f'font-weight:500">{count}</span></div>'
         f'<div style="font-size:13.5px;color:rgba(13,22,38,.62);line-height:1.55;'
         f'margin-top:8px">{ev["desc"]}</div>'
-        f'<div style="margin-top:12px;display:inline-flex;align-self:flex-start;font-size:10.5px;'
-        f'letter-spacing:.1em;font-weight:600;color:{fmt_color};border:1px solid {fmt_color};'
-        f'padding:3px 9px;border-radius:3px">{fmt_label}</div>'
+        f'<div style="margin-top:auto;padding-top:12px;display:inline-flex;align-self:flex-start;'
+        f'font-size:10.5px;letter-spacing:.1em;font-weight:600;color:{fmt_color};'
+        f'border:1px solid {fmt_color};padding:3px 9px;border-radius:3px">{fmt_label}</div>'
         '</div>'
     )
 
 
-def future_card(ev: dict, idx: int) -> str:
-    """One future-event card. Open events get a «Записаться» button."""
+def future_card(ev: dict) -> str:
     d_parts = ev["date"].split("/")
     date_label = f'{d_parts[0]} АВГ · {ev["time"]}'
-    fmt_label = "Москва, офлайн"
-    media = (
-        '<div style="position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;'
-        'background:linear-gradient(135deg,#0D1626 0%,#1a2942 55%,#A87F3A 140%)">'
-        '<span style="position:absolute;inset:0;display:flex;align-items:center;'
-        'justify-content:center;font-family:\'Unbounded\',sans-serif;font-weight:800;'
-        f'font-size:64px;color:#C89B4E;opacity:.42">{ev["letter"]}</span>'
-        '</div>'
-    )
+    media = media_placeholder(ev["letter"], "4/3")
     if ev["open"]:
         btn = (
-            '<button type="button" data-event-register="'
+            '<button type="button" class="ev-register-btn" data-event-register="'
             f'{ev["slug"]}" data-event-name="{ev["name"]}" '
-            'style="margin-top:18px;width:100%;font-family:\'Unbounded\',sans-serif;'
+            'style="margin-top:auto;width:100%;font-family:\'Unbounded\',sans-serif;'
             'font-weight:600;font-size:14px;color:#F7F3EA;background:#940907;border:none;'
             'padding:15px 20px;border-radius:100px;cursor:pointer;transition:transform .3s ease,'
-            'filter .3s ease" onmouseover="this.style.transform=\'translateY(-2px)\';'
-            'this.style.filter=\'brightness(1.12)\'" '
-            'onmouseout="this.style.transform=\'\';this.style.filter=\'\'">'
-            'Записаться →</button>'
+            'filter .3s ease">Записаться →</button>'
         )
     else:
         btn = (
-            '<div style="margin-top:18px;width:100%;text-align:center;font-size:12px;'
+            '<div style="margin-top:auto;width:100%;text-align:center;font-size:12px;'
             'color:rgba(13,22,38,.5);letter-spacing:.04em;border:1px solid rgba(13,22,38,.18);'
-            'padding:13px 20px;border-radius:100px">по статусу резидента</div>'
+            'padding:13px 20px;border-radius:100px">только для резидентов</div>'
         )
     return (
         '<div style="flex:none;width:340px;display:flex;flex-direction:column;'
         f'scroll-snap-align:start;background:#F4EFE3;border:1px solid rgba(13,22,38,.1)">'
         f'{media}'
-        f'<div style="padding:24px 24px 26px">'
+        f'<div style="padding:24px 24px 26px;display:flex;flex-direction:column;flex:1">'
         f'<div style="font-size:12px;letter-spacing:.1em;color:#940907;font-weight:700;'
         f'text-transform:uppercase">{date_label}</div>'
         f'<div style="font-family:\'Unbounded\',sans-serif;font-weight:600;font-size:22px;'
         f'color:#0D1626;line-height:1.25;margin-top:10px">{ev["name"]}</div>'
         f'<div style="font-size:12px;color:rgba(13,22,38,.5);margin-top:6px;'
-        f'letter-spacing:.02em">{fmt_label}</div>'
+        f'letter-spacing:.02em">Москва, офлайн</div>'
         f'<div style="font-size:14px;color:rgba(13,22,38,.62);line-height:1.55;'
         f'margin-top:12px">{ev["desc"]}</div>'
         f'{btn}'
@@ -132,9 +106,7 @@ def build_past_timeline(past: dict) -> str:
         for ev in evs:
             cards += past_card(month, ev)
     return (
-        # scroll container
         '<div style="position:relative;margin-top:40px">'
-        # left/right scroll buttons (desktop)
         '<button type="button" aria-label="назад" data-tl-prev '
         'style="position:absolute;left:-8px;top:38%;z-index:3;width:38px;height:38px;'
         'border-radius:50%;border:1px solid rgba(13,22,38,.2);background:#F1EDE3;color:#0D1626;'
@@ -151,7 +123,6 @@ def build_past_timeline(past: dict) -> str:
 
 
 def build_future_block(future: list) -> str:
-    # assign slug for each open event
     slug_map = {
         "ИнвестУжин с А. Андрусовым": "investuzhin-andrusov-1108",
         "ИнвестБаня": "investbanya-2508",
@@ -159,8 +130,8 @@ def build_future_block(future: list) -> str:
     for ev in future:
         ev["slug"] = slug_map.get(ev["name"], ev["name"].lower().replace(" ", "-"))
     cards = ""
-    for i, ev in enumerate(future):
-        cards += future_card(ev, i)
+    for ev in future:
+        cards += future_card(ev)
     return (
         '<div style="margin-top:20px">'
         '<div style="display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;'
@@ -170,8 +141,23 @@ def build_future_block(future: list) -> str:
     )
 
 
+def build_styles() -> str:
+    """CSS for hover effects (NO inline onmouseover). React-safe."""
+    return (
+        '<style>'
+        # register button hover (desktop) — pure CSS, no JS string handlers
+        '.ev-register-btn:hover{transform:translateY(-2px);filter:brightness(1.12)}'
+        # submit button hover
+        '#ev-submit:hover{transform:translateY(-2px);filter:brightness(1.2)}'
+        # thin webkit scrollbar for timelines
+        '[data-timeline]::-webkit-scrollbar{height:6px}'
+        '[data-timeline]::-webkit-scrollbar-thumb{background:#A87F3A;border-radius:3px}'
+        '[data-timeline]::-webkit-scrollbar-track{background:transparent}'
+        '</style>'
+    )
+
+
 def build_modal() -> str:
-    """Registration modal — hidden by default, shown on «Записаться»."""
     return '''
 <!-- events registration modal -->
 <div id="ev-modal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;
@@ -222,9 +208,7 @@ data-ev-modal>
       <button type="submit" id="ev-submit"
         style="font-family:'Unbounded',sans-serif;font-weight:600;font-size:15px;color:#F7F3EA;
         background:#0D1626;border:none;padding:16px;border-radius:100px;cursor:pointer;
-        transition:transform .3s ease,filter .3s ease"
-        onmouseover="this.style.transform='translateY(-2px)';this.style.filter='brightness(1.2)'"
-        onmouseout="this.style.transform='';this.style.filter=''">Отправить заявку</button>
+        transition:transform .3s ease,filter .3s ease">Отправить заявку</button>
     </form>
     <div id="ev-success" style="display:none;text-align:center;padding:30px 10px">
       <div style="font-family:'Unbounded',sans-serif;font-weight:700;font-size:22px;color:#0D1626">
@@ -240,7 +224,6 @@ data-ev-modal>
 
 
 def build_modal_js() -> str:
-    """JS for modal open/close + form submit. Endpoint will be wired in step 3."""
     return '''
 <script>
 (function(){
@@ -284,7 +267,6 @@ def build_modal_js() -> str:
       if(!data.consent){ showErr('Необходимо согласие на обработку данных'); return; }
       var btn = document.getElementById('ev-submit');
       btn.disabled = true; btn.textContent='Отправка…';
-      // POST to /api/v1/events/<slug>/register  (endpoint added in step 3)
       fetch('/api/v1/events/' + (data.source||'').replace('event-new-','') + '/register', {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify(data)
@@ -297,7 +279,6 @@ def build_modal_js() -> str:
   }
   function showErr(msg){ if(errEl){ errEl.textContent=msg; errEl.style.display='block'; } }
 
-  // timeline scroll buttons
   document.querySelectorAll('[data-timeline]').forEach(function(tl){
     var wrap = tl.parentElement;
     var prev = wrap.querySelector('[data-tl-prev]');
@@ -319,39 +300,29 @@ def build_modal_js() -> str:
 
 
 def build_section(data: dict) -> str:
-    """Build the complete new section HTML."""
     lead = ("Отраслевые инвестиционные разборы и развлекательные форматы, спорт, встречи "
             "в малых группах, семейные выезды и путешествия — наши мероприятия добавляют "
             "яркость жизни резидентов.")
-
     past_tl = build_past_timeline(data["past"])
     future_bl = build_future_block(data["future"])
-
-    section = (
-        # ── main section: beige bg, full-bleed centered ──
+    return (
         '<div style="padding:64px ' + HPAD + ' 56px;border-bottom:1.5px solid #0D1626;'
         'background:' + BEIGE + '">'
-        # eyebrow row
         '<div style="display:flex;justify-content:space-between;align-items:baseline">'
           '<div style="display:flex;align-items:center;gap:12px;font-size:11.5px;letter-spacing:.16em;'
           'color:' + GOLD_2 + '"><span style="width:28px;height:1.5px;background:' + GOLD_2 +
-          ';display:block"></span>06 — ИСТОРИЯ СОБЫТИЙ</div>'
+          ';display:block"></span>07 — НАШИ МЕРОПРИЯТИЯ</div>'
           '<div style="font-size:12px;color:rgba(13,22,38,.45);letter-spacing:.06em">ХРОНИКА КЛУБА</div>'
         '</div>'
-        # heading
         '<div style="margin-top:28px;font-family:\'Unbounded\',sans-serif;font-weight:800;'
         'font-size:54px;line-height:1.05;color:#0D1626;letter-spacing:-.02em">Наши '
         '<span style="background-image:url(&quot;0add0925-1bcc-4d7d-a266-4cc01f9995a3&quot;);'
         'background-size:cover;background-position:center;-webkit-background-clip:text;'
         'background-clip:text;color:transparent">мероприятия</span></div>'
-        # lead
         '<div style="margin-top:16px;font-size:17px;color:rgba(13,22,38,.62);line-height:1.6;'
         'max-width:680px">' + lead + '</div>'
-        # past timeline
         + past_tl +
-        # divider
         '<div style="height:1px;background:rgba(13,22,38,.18);margin:52px 0 0"></div>'
-        # future heading
         '<div style="margin-top:40px;display:flex;align-items:center;gap:12px;font-size:11.5px;'
         'letter-spacing:.16em;color:' + BORDEAU + '"><span style="width:28px;height:1.5px;'
         'background:' + BORDEAU + ';display:block"></span>ЧТО ДАЛЬШЕ — АКТУАЛЬНЫЕ</div>'
@@ -361,7 +332,6 @@ def build_section(data: dict) -> str:
         + future_bl +
         '</div>'
     )
-    return section
 
 
 def main():
@@ -373,47 +343,54 @@ def main():
     raw_json = m.group(1).strip()
     tpl = json.loads(raw_json)
 
-    # Locate insertion point: right before the existing «06 — СОБЫТИЯ» section div.
-    idx_eyebrow = tpl.find('06 — СОБЫТИЯ')
-    if idx_eyebrow < 0:
-        sys.exit("ERROR: '06 — СОБЫТИЯ' eyebrow not found — anchor missing")
-    back = tpl.rfind('background:' + BEIGE, 0, idx_eyebrow)
-    if back < 0:
-        sys.exit("ERROR: section-06 opening div not found")
-    sec06_start = tpl.rfind('<div', 0, back)
-
-    # Idempotency guard: if our block marker already exists, abort.
-    if '06 — ИСТОРИЯ СОБЫТИЙ' in tpl:
+    if '07 — НАШИ МЕРОПРИЯТИЯ' in tpl:
         sys.exit("ERROR: block already inserted (idempotency guard)")
 
-    section_html = build_section(data)
+    # 1) Wire cookie-consent.js into <head> (the consent banner was missing on /new).
+    cc_tag = '<script src="/cookie-consent.js" defer></script>'
+    if cc_tag not in tpl:
+        head_open = re.search(r'<head[^>]*>', tpl)
+        if not head_open:
+            sys.exit("ERROR: <head> not found")
+        i = head_open.end()
+        tpl = tpl[:i] + cc_tag + tpl[i:]
 
-    # Insert the section + the modal + modal JS.
-    # Modal + JS go right after </body>? No — must be inside the document. Place modal+JS
-    # right before the closing of root container's last section, OR simpler: append modal+JS
-    # just before </body>. Since the template ends with </body></html>, insert there.
+    # 2) Insert the styles block right after <head> too (after cookie-consent).
+    head_open = re.search(r'<head[^>]*>', tpl)
+    i = head_open.end()
+    tpl = tpl[:i] + build_styles() + tpl[i:]
+
+    # 3) Insert the events section AFTER «06 — СОБЫТИЯ» section (i.e. before the
+    #    section that follows it — «07 — ЦИФРОВОЙ КОНСЬЕРЖ»).
+    idx_concierge = tpl.find('07 — ЦИФРОВОЙ КОНСЬЕРЖ')
+    if idx_concierge < 0:
+        sys.exit("ERROR: '07 — ЦИФРОВОЙ КОНСЬЕРЖ' anchor not found")
+    back = tpl.rfind('background:' + NAVY, 0, idx_concierge)
+    if back < 0:
+        sys.exit("ERROR: concierge section opening div not found")
+    insert_at = tpl.rfind('<div', 0, back)
+
+    section_html = build_section(data)
+    tpl = tpl[:insert_at] + section_html + tpl[insert_at:]
+
+    # 4) Modal + JS go right before </body>.
     body_close = tpl.rfind('</body>')
     if body_close < 0:
         sys.exit("ERROR: </body> not found")
     modal_html = build_modal() + build_modal_js()
-    new_tpl = tpl[:body_close] + modal_html + tpl[body_close:]
+    tpl = tpl[:body_close] + modal_html + tpl[body_close:]
 
-    # Now insert the section block at sec06_start (before section 06).
-    # (offsets in new_tpl are shifted by modal insertion only AFTER body_close, so sec06_start
-    #  which is < body_close is unaffected.)
-    new_tpl = new_tpl[:sec06_start] + section_html + new_tpl[sec06_start:]
-
-    # Re-encode into bundler JSON (safe for <script>: escape </ ).
-    new_json = json.dumps(new_tpl, ensure_ascii=False).replace('</', '<\\u002F')
-    # round-trip check
-    if json.loads(new_json) != new_tpl:
+    # 5) Re-encode into bundler JSON (safe for <script>: escape </ ).
+    new_json = json.dumps(tpl, ensure_ascii=False).replace('</', '<\\u002F')
+    if json.loads(new_json) != tpl:
         sys.exit("ERROR: round-trip failed")
 
     new_file = raw_file.replace(raw_json, new_json, 1)
     if new_file == raw_file:
         sys.exit("ERROR: file unchanged")
     SRC.write_text(new_file, encoding="utf-8")
-    print(f"OK. Inserted «Наши мероприятия» block before section 06 (offset {sec06_start}).")
+    print(f"OK. Inserted «Наши мероприятия» after section 06 (before concierge).")
+    print(f"  cookie-consent wired, no inline handlers, buttons bottom-aligned.")
     print(f"  file size: {len(raw_file)} → {len(new_file)} bytes")
 
 
