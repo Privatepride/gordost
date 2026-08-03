@@ -219,15 +219,16 @@ def main():
     #    These are <div> elements with style-hover attr. We add the data attr + a class.
     triggers = 0
     for label in ['Стать резидентом ↗', 'Подать заявку ↗']:
-        # match the <div ...>label</div> pattern
-        pat = re.compile(r'(<div\b[^>]*style-hover="[^"]*"[^>]*>)(' + re.escape(label) + r')</div>')
+        # match the <div ...>label</div> pattern — capture opening WITHOUT the
+        # closing '>' so we can inject the data attr inside the tag.
+        pat = re.compile(r'(<div\b[^>]*style-hover="[^"]*"[^>]*)(>)(' + re.escape(label) + r')</div>')
         def repl(mm):
             nonlocal triggers
-            opening = mm.group(1)
-            if 'data-apply-open' in opening:
+            opening_no_gt = mm.group(1)
+            if 'data-apply-open' in opening_no_gt:
                 return mm.group(0)
             triggers += 1
-            return opening + ' data-apply-open="1">' + mm.group(2) + '</div>'
+            return opening_no_gt + ' data-apply-open="1">' + mm.group(3) + '</div>'
         tpl = pat.sub(repl, tpl)
     if triggers == 0:
         sys.exit("ERROR: no trigger buttons found")
