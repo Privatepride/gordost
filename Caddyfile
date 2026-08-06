@@ -109,21 +109,30 @@ https://gordost.club:9443 {
       file_server
     }
     # Главная страница — новый дизайн
-    # Мобильные User-Agent → mobile.html, остальные → index.html
-    @mobileUA header User-Agent *Mobile*
-    handle @mobileUA {
+    # Мобильные User-Agent → mobile.html (ТОЛЬКО корень /, ассеты не трогаем)
+    @mobileRoot {
+      path /
+      header User-Agent *Mobile*
+    }
+    handle @mobileRoot {
       root * /srv
       rewrite * /mobile.html
       file_server
     }
-    @androidUA header User-Agent *Android*
-    handle @androidUA {
+    @androidRoot {
+      path /
+      header User-Agent *Android*
+    }
+    handle @androidRoot {
       root * /srv
       rewrite * /mobile.html
       file_server
     }
-    @iphoneUA header User-Agent *iPhone*
-    handle @iphoneUA {
+    @iphoneRoot {
+      path /
+      header User-Agent *iPhone*
+    }
+    handle @iphoneRoot {
       root * /srv
       rewrite * /mobile.html
       file_server
