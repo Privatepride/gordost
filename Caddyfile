@@ -108,7 +108,26 @@ https://gordost.club:9443 {
       uri path_regexp ^/new/?$ /new/index.html
       file_server
     }
-    # Главная страница — статический HTML нового дизайна (из папки /public/)
+    # Главная страница — новый дизайн
+    # Мобильные User-Agent → mobile.html, остальные → index.html
+    @mobileUA header User-Agent *Mobile*
+    handle @mobileUA {
+      root * /srv
+      rewrite * /mobile.html
+      file_server
+    }
+    @androidUA header User-Agent *Android*
+    handle @androidUA {
+      root * /srv
+      rewrite * /mobile.html
+      file_server
+    }
+    @iphoneUA header User-Agent *iPhone*
+    handle @iphoneUA {
+      root * /srv
+      rewrite * /mobile.html
+      file_server
+    }
     handle {
       root * /srv
       try_files {path} /index.html
