@@ -108,8 +108,12 @@ https://gordost.club:9443 {
       uri path_regexp ^/new/?$ /new/index.html
       file_server
     }
-    # Всё остальное — Vite SSR
-    reverse_proxy gordost-app:9101
+    # Главная страница — статический HTML нового дизайна (из папки /public/)
+    handle {
+      root * /srv
+      try_files {path} /index.html
+      file_server
+    }
   }
 }
 
